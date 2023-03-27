@@ -15,11 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 class JwtTokenProviderTest {
 
     private static final String secretKey = "TestLJNO9KUPS2RN+HVVUYT9LUDMUAGIMUEMKVXR4DH5I=";
-    private JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(
-            new AuthTokenExtractor(), "TestLJNO9KUPS2RN+HVVUYT9LUDMUAGIMUEMKVXR4DH5I=", 7200000L
-    );
-
     private static final String ACCESS_TOKEN_SUBJECT = "AccessToken";
+    private JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(
+            new AuthTokenExtractor(), secretKey, 7200000L
+    );
 
     @Test
     @DisplayName("토큰이 생성된다.")
