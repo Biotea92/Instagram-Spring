@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class CommonControllerAdvice {
 
-    private static final String LOG_FORMAT = "Class={}, Code={}, ErrorMessage={}";
+    private static final String LOG_FORMAT = "Body={}";
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> customException(CustomException e) {
@@ -23,7 +23,7 @@ public class CommonControllerAdvice {
                 .validation(e.getValidation())
                 .build();
 
-        log.info(LOG_FORMAT, e.getClass().getSimpleName(), e.getStatusCode(), e.getMessage(), e);
+        log.info(LOG_FORMAT, body, e);
         return ResponseEntity.status(statusCode).body(body);
     }
 }
