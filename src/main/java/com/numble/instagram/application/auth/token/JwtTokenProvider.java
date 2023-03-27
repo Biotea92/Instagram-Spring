@@ -55,10 +55,10 @@ public class JwtTokenProvider implements TokenProvider {
     @Override
     public Long getUserId(String authorizationHeader) {
         String token = authTokenExtractor.extractToken(authorizationHeader);
-        Claims body = getClaims(token).getBody();
         try {
+            Claims body = getClaims(token).getBody();
             return body.get("id", Long.class);
-        } catch (RequiredTypeException | NullPointerException | IllegalArgumentException e) {
+        } catch (RequiredTypeException | NullPointerException | ExpiredJwtException | IllegalArgumentException e) {
             throw new TokenExpiredException();
         }
     }
