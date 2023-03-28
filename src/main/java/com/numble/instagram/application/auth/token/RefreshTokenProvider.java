@@ -3,9 +3,6 @@ package com.numble.instagram.application.auth.token;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 @Component
 public class RefreshTokenProvider {
 
@@ -16,6 +13,6 @@ public class RefreshTokenProvider {
     }
 
     public RefreshToken createToken(Long userId) {
-        return new RefreshToken(UUID.randomUUID().toString(), userId, LocalDateTime.now().plusDays(validTimeInDays));
+        return RefreshToken.create(userId, validTimeInDays);
     }
 }
