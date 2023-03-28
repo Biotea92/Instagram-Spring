@@ -17,7 +17,7 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository{
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private static final String TABLE_NAME = "refresh_token";
-    private final RowMapper<RefreshToken> rowMapper = (rs, rowNum) -> RefreshToken.builder()
+    private static final RowMapper<RefreshToken> rowMapper = (rs, rowNum) -> RefreshToken.builder()
             .refreshToken(rs.getString("token_value"))
             .expiredAt(rs.getTimestamp("expired_at").toLocalDateTime())
             .userId(rs.getLong("user_id"))
@@ -59,8 +59,8 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository{
                 WHERE token_value = :token_value
                 """, TABLE_NAME);
         SqlParameterSource namedParameters = new MapSqlParameterSource("token_value", tokenValue);
-        int updateCount = namedParameterJdbcTemplate.update(sql, namedParameters);
-        if (updateCount != 1) {
+        int deleteCount = namedParameterJdbcTemplate.update(sql, namedParameters);
+        if (deleteCount != 1) {
             throw new IllegalStateException();
         }
     }
