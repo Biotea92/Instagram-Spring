@@ -6,7 +6,7 @@ public interface RefreshTokenRepository {
 
     RefreshToken save(RefreshToken refreshToken);
 
-    Optional<RefreshToken> findToken(String savedTokenUuid);
+    Optional<RefreshToken> findTokenByTokenValue(String tokenValue);
 
-    void delete(String savedTokenUuid);
+    void delete(String tokenValue);
 }
