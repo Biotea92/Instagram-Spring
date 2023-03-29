@@ -37,7 +37,7 @@ class RefreshTokenRepositoryImplTest {
     void save_shouldInsertTokenIntoDatabase() {
         // given
         RefreshToken token = RefreshToken.builder()
-                .refreshToken("abc123")
+                .tokenValue("abc123")
                 .expiredAt(LocalDateTime.now())
                 .userId(1L)
                 .build();
@@ -46,7 +46,7 @@ class RefreshTokenRepositoryImplTest {
         RefreshToken savedToken = repository.save(token);
 
         // then
-        assertNotNull(savedToken.refreshToken());
+        assertNotNull(savedToken.tokenValue());
         assertNotNull(savedToken.expiredAt());
         assertEquals(token.userId(), savedToken.userId());
     }
@@ -57,7 +57,7 @@ class RefreshTokenRepositoryImplTest {
         // given
         String tokenValue = "abc123";
         RefreshToken token = RefreshToken.builder()
-                .refreshToken(tokenValue)
+                .tokenValue(tokenValue)
                 .expiredAt(LocalDateTime.now())
                 .userId(1L)
                 .build();
@@ -68,7 +68,7 @@ class RefreshTokenRepositoryImplTest {
 
         // then
         assertTrue(foundToken.isPresent());
-        assertEquals(tokenValue, foundToken.get().refreshToken());
+        assertEquals(tokenValue, foundToken.get().tokenValue());
     }
 
     @Test
@@ -90,7 +90,7 @@ class RefreshTokenRepositoryImplTest {
         // given
         String tokenValue = "abc123";
         RefreshToken token = RefreshToken.builder()
-                .refreshToken(tokenValue)
+                .tokenValue(tokenValue)
                 .expiredAt(LocalDateTime.now())
                 .userId(1L)
                 .build();
