@@ -42,15 +42,18 @@ class AuthControllerDocsTest {
     private MockMvc mockMvc;
     @MockBean
     private AuthService authService;
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+    private static final String DOCUMENT_IDENTIFIER = "auth/{method-name}/";
 
     @BeforeEach
-    void setUp(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
+    void setUp(RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                 .apply(documentationConfiguration(restDocumentation)
                         .operationPreprocessors()
                         .withRequestDefaults(prettyPrint())
-                        .withResponseDefaults(prettyPrint()) // , modifyHeaders().remove("Vary")
-                ).build();
+                        .withResponseDefaults(prettyPrint())) // , modifyHeaders().remove("Vary")
+                .build();
     }
 
     @Test
@@ -75,7 +78,7 @@ class AuthControllerDocsTest {
                 .andExpect(cookie().secure("refreshToken", true))
                 .andExpect(cookie().path("refreshToken", "/"))
                 .andDo(print())
-                .andDo(document("auth/{method-name}/",
+                .andDo(document(DOCUMENT_IDENTIFIER,
                         requestFields(
                                 fieldWithPath("nickname").description("nickname"),
                                 fieldWithPath("password").description("password")
