@@ -26,7 +26,7 @@ public class AuthService {
     public LoginDto login(String nickname, String password) {
         User loginUser = userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
-        if (passwordEncoder.matches(password, loginUser.getPassword())) {
+        if (!passwordEncoder.matches(password, loginUser.getPassword())) {
             throw new PasswordMismatchException();
         }
 
