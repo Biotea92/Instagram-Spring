@@ -14,7 +14,7 @@ public class RefreshTokenProviderTest {
     private long validTimeInDays;
 
     @Test
-    public void testCreateToken() {
+    void testCreateToken() {
         Long userId = 1L;
 
         RefreshTokenProvider refreshTokenProvider = new RefreshTokenProvider(validTimeInDays);
