@@ -34,6 +34,6 @@ public class AuthService {
         String accessToken = tokenProvider.createAccessToken(userId);
         RefreshToken refreshToken = refreshTokenProvider.createToken(userId);
         refreshTokenRepository.save(refreshToken);
-        return LoginDto.create(accessToken, refreshToken.refreshToken());
+        return LoginDto.create(accessToken, refreshToken.tokenValue());
     }
 }

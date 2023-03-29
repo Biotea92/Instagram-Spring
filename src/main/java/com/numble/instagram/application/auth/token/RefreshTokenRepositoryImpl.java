@@ -18,7 +18,7 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository{
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private static final String TABLE_NAME = "refresh_token";
     private static final RowMapper<RefreshToken> rowMapper = (rs, rowNum) -> RefreshToken.builder()
-            .refreshToken(rs.getString("token_value"))
+            .tokenValue(rs.getString("token_value"))
             .expiredAt(rs.getTimestamp("expired_at").toLocalDateTime())
             .userId(rs.getLong("user_id"))
             .build();

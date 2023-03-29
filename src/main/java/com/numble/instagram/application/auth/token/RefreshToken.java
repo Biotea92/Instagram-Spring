@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
-public record RefreshToken(String refreshToken, Long userId, LocalDateTime expiredAt) {
+public record RefreshToken(String tokenValue, Long userId, LocalDateTime expiredAt) {
 
     public static RefreshToken create(Long userId, long validTimeInDays) {
         return new RefreshToken(UUID.randomUUID().toString(), userId, LocalDateTime.now().plusDays(validTimeInDays));
