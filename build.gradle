@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.0.5'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.numble'
@@ -12,10 +13,15 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	asciidoctorExtensions
 }
 
 repositories {
 	mavenCentral()
+}
+
+ext {
+	snippetsDir = file('build/generated-snippets')
 }
 
 dependencies {
@@ -33,15 +39,46 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
-	testImplementation 'org.jeasy:easy-random-core:5.0.0'
+	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
+	testImplementation 'org.jeasy:easy-random-core:5.0.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-tasks.named('test') {
+test {
+	outputs.dir snippetsDir
 	useJUnitPlatform()
+}
+
+asciidoctor {
+	configurations 'asciidoctorExtensions'
+	inputs.dir snippetsDir
+	sources {
+		include("**/index.adoc")
+	}
+	baseDirFollowsSourceFile()
+	dependsOn test
+}
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor
+	from file("${asciidoctor.outputDir}")
+	into file("build/resources/main/static/docs")
+}
+
+bootJar {
+	dependsOn copyDocument
 }
 
 jar {
 	enabled = false
+}
+
+task dolocal {
+	dependsOn asciidoctor
+	copy {
+		from asciidoctor.outputDir
+		into "src/main/resources/static/docs"
+	}
 }
