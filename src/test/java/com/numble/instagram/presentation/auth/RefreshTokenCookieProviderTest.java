@@ -1,6 +1,5 @@
 package com.numble.instagram.presentation.auth;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +8,9 @@ import org.springframework.boot.web.server.Cookie;
 import org.springframework.http.ResponseCookie;
 
 import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class RefreshTokenCookieProviderTest {
@@ -23,13 +25,13 @@ public class RefreshTokenCookieProviderTest {
     void createCookie() {
         ResponseCookie cookie = refreshTokenCookieProvider.createCookie("testRefreshToken");
 
-        Assertions.assertEquals(REFRESH_TOKEN, cookie.getName());
-        Assertions.assertEquals("testRefreshToken", cookie.getValue());
-        Assertions.assertTrue(cookie.isHttpOnly());
-        Assertions.assertTrue(cookie.isSecure());
-        Assertions.assertEquals("/", cookie.getPath());
-        Assertions.assertEquals(Cookie.SameSite.NONE.attributeValue(), cookie.getSameSite());
-        Assertions.assertEquals(Duration.ofDays(7), cookie.getMaxAge());
+        assertEquals(REFRESH_TOKEN, cookie.getName());
+        assertEquals("testRefreshToken", cookie.getValue());
+        assertTrue(cookie.isHttpOnly());
+        assertTrue(cookie.isSecure());
+        assertEquals("/", cookie.getPath());
+        assertEquals(Cookie.SameSite.NONE.attributeValue(), cookie.getSameSite());
+        assertEquals(Duration.ofDays(7), cookie.getMaxAge());
     }
 
     @Test
@@ -37,12 +39,12 @@ public class RefreshTokenCookieProviderTest {
     void createLogoutCookie() {
         ResponseCookie cookie = refreshTokenCookieProvider.createLogoutCookie();
 
-        Assertions.assertEquals(REFRESH_TOKEN, cookie.getName());
-        Assertions.assertEquals("", cookie.getValue());
-        Assertions.assertTrue(cookie.isHttpOnly());
-        Assertions.assertTrue(cookie.isSecure());
-        Assertions.assertEquals("/", cookie.getPath());
-        Assertions.assertEquals(Cookie.SameSite.NONE.attributeValue(), cookie.getSameSite());
-        Assertions.assertEquals(Duration.ZERO, cookie.getMaxAge());
+        assertEquals(REFRESH_TOKEN, cookie.getName());
+        assertEquals("", cookie.getValue());
+        assertTrue(cookie.isHttpOnly());
+        assertTrue(cookie.isSecure());
+        assertEquals("/", cookie.getPath());
+        assertEquals(Cookie.SameSite.NONE.attributeValue(), cookie.getSameSite());
+        assertEquals(Duration.ZERO, cookie.getMaxAge());
     }
 }
