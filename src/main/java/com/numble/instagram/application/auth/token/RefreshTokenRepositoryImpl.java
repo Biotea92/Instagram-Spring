@@ -27,7 +27,7 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository{
     public RefreshToken save(RefreshToken refreshToken) {
         String sql = String.format("""
                 INSERT INTO %s (token_value, expired_at, user_id)
-                VALUES (:refreshToken, :expiredAt, :userId)
+                VALUES (:tokenValue, :expiredAt, :userId)
                 """, TABLE_NAME);
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(refreshToken);
         int insertCount = namedParameterJdbcTemplate.update(sql, parameterSource);
