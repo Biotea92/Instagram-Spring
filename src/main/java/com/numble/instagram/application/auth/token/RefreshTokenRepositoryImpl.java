@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class RefreshTokenRepositoryImpl implements RefreshTokenRepository{
+public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private static final String TABLE_NAME = "refresh_token";
