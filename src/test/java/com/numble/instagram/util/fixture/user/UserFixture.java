@@ -1,6 +1,6 @@
 package com.numble.instagram.util.fixture.user;
 
-import com.numble.instagram.domain.user.User;
+import com.numble.instagram.domain.user.entity.User;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 

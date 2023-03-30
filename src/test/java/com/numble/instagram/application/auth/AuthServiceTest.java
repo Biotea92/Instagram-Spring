@@ -4,7 +4,7 @@ import com.numble.instagram.application.auth.token.RefreshToken;
 import com.numble.instagram.application.auth.token.RefreshTokenProvider;
 import com.numble.instagram.application.auth.token.RefreshTokenRepository;
 import com.numble.instagram.application.auth.token.TokenProvider;
-import com.numble.instagram.domain.user.User;
+import com.numble.instagram.domain.user.entity.User;
 import com.numble.instagram.domain.user.repository.UserRepository;
 import com.numble.instagram.dto.common.LoginDto;
 import com.numble.instagram.exception.notfound.UserNotFoundException;
