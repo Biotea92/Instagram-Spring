@@ -49,6 +49,7 @@ public class AuthController {
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(AccessTokenResponse.from(loginDto.accessToken()));
     }
+
     private void validateRefreshTokenExists(final String refreshToken) {
         if (refreshToken == null) {
             throw new RefreshTokenNotExistsException();
