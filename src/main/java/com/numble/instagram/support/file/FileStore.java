@@ -1,4 +1,4 @@
-package com.numble.instagram.application.file;
+package com.numble.instagram.support.file;
 
 import org.springframework.web.multipart.MultipartFile;
 
