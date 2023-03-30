@@ -37,3 +37,4 @@ out/
 .vscode/
 
 /src/main/resources/application-prd.properties
+/src/main/resources/static/docs
