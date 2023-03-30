@@ -42,4 +42,12 @@ public class User {
         this.password = password;
         this.profileImageUrl = profileImageUrl;
     }
+
+    public static User create(String nickname, String encodedPassword, String profileImageUrl) {
+        return User.builder()
+                .nickname(nickname)
+                .password(encodedPassword)
+                .profileImageUrl(profileImageUrl)
+                .build();
+    }
 }
