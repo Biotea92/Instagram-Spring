@@ -1,8 +1,9 @@
 == *Auth*
 
+'''
+
 === Login
 
-'''
 ==== Request
 include::{snippets}/auth/login/http-request.adoc[]
 - body
@@ -31,3 +32,22 @@ include::{snippets}/auth/logout/request-cookies.adoc[]
 include::{snippets}/auth/logout/http-response.adoc[]
 - header
 include::{snippets}/auth/logout/response-headers.adoc[]
+
+
+'''
+
+=== Access Token 재발급
+
+==== Request
+include::{snippets}/auth/reissue-token/http-request.adoc[]
+- cookie
+include::{snippets}/auth/reissue-token/request-cookies.adoc[]
+
+==== Response
+include::{snippets}/auth/reissue-token/http-response.adoc[]
+- body
+include::{snippets}/auth/reissue-token/response-fields.adoc[]
+- header
+include::{snippets}/auth/reissue-token/response-headers.adoc[]
+- cookie
+include::{snippets}/auth/reissue-token/response-cookies.adoc[]
