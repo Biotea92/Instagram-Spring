@@ -9,6 +9,8 @@ import com.numble.instagram.domain.user.repository.UserRepository;
 import com.numble.instagram.dto.common.LoginDto;
 import com.numble.instagram.exception.notfound.UserNotFoundException;
 import com.numble.instagram.exception.unauthorized.PasswordMismatchException;
+import com.numble.instagram.exception.unauthorized.RefreshTokenExpiredException;
+import com.numble.instagram.exception.unauthorized.RefreshTokenNotExistsException;
 import com.numble.instagram.util.fixture.auth.RefreshTokenFixture;
 import com.numble.instagram.util.fixture.user.UserFixture;
 import org.junit.jupiter.api.DisplayName;
@@ -86,5 +88,56 @@ class AuthServiceTest {
         when(userRepository.findByNickname(nickname)).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> authService.login(nickname, password));
+    }
+
+    @Test
+    @DisplayName("토큰이 재발급 되어야한다.")
+    void testReissueToken() {
+        Long userId = 1L;
+        String refreshTokenValue = "valid-refresh-token-value";
+        RefreshToken refreshToken = RefreshTokenFixture
+                .create(refreshTokenValue, userId, LocalDateTime.now().plusDays(1));
+
+        when(refreshTokenRepository.findTokenByTokenValue(refreshTokenValue)).thenReturn(Optional.of(refreshToken));
+        String newAccessToken = "new-access-token";
+        RefreshToken newRefreshToken = RefreshTokenFixture
+                .create("new-refresh-token-value", userId, LocalDateTime.now().plusDays(7));
+        when(tokenProvider.createAccessToken(userId)).thenReturn(newAccessToken);
+        when(refreshTokenProvider.createToken(userId)).thenReturn(newRefreshToken);
+
+        LoginDto loginDto = authService.reissueToken(refreshTokenValue);
+
+        assertNotNull(loginDto);
+        assertEquals(newAccessToken, loginDto.accessToken());
+        assertEquals(newRefreshToken.tokenValue(), loginDto.refreshToken());
+        verify(refreshTokenRepository, times(1)).delete(refreshTokenValue);
+        verify(refreshTokenRepository, times(1)).save(newRefreshToken);
+    }
+
+    @Test
+    @DisplayName("DB에 없는 토큰이면 RefreshTokenNotExistsException이 발생한다.")
+    public void reissueToken_invalidToken() {
+        String refreshTokenValue = "invalid-refresh-token-value";
+        when(refreshTokenRepository.findTokenByTokenValue(refreshTokenValue)).thenReturn(Optional.empty());
+
+        assertThrows(RefreshTokenNotExistsException.class, () -> authService.reissueToken(refreshTokenValue));
+
+        verify(refreshTokenRepository, times(1)).findTokenByTokenValue(refreshTokenValue);
+        verify(refreshTokenRepository, never()).delete(anyString());
+        verify(refreshTokenRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("만료된 토큰이면 발생한다.")
+    public void reissueToken_expiredToken() {
+        Long userId = 1L;
+        String refreshTokenValue = "expired-refresh-token-value";
+        RefreshToken expiredRefreshToken = RefreshTokenFixture
+                .create(refreshTokenValue, userId, LocalDateTime.now().minusDays(1));
+        when(refreshTokenRepository.findTokenByTokenValue(refreshTokenValue)).thenReturn(Optional.of(expiredRefreshToken));
+
+        assertThrows(RefreshTokenExpiredException.class, () -> authService.reissueToken(refreshTokenValue));
+
+        verify(refreshTokenRepository, times(1)).delete(refreshTokenValue);
     }
 }

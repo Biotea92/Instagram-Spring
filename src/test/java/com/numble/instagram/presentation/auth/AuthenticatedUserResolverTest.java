@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthenticatedMemberResolverTest {
+public class AuthenticatedUserResolverTest {
 
     @Mock
     private TokenProvider tokenProvider;
@@ -25,17 +25,17 @@ public class AuthenticatedMemberResolverTest {
     private MethodParameter parameter;
     @Mock
     private NativeWebRequest webRequest;
-    private AuthenticatedMemberResolver resolver;
+    private AuthenticatedUserResolver resolver;
 
     @BeforeEach
     void setUp() {
-        resolver = new AuthenticatedMemberResolver(tokenProvider);
+        resolver = new AuthenticatedUserResolver(tokenProvider);
     }
 
     @Test
     @DisplayName("AuthenticatedMember 파라미터 어노테이션이 있으면 true를 반환한다.")
     void testSupportsParameter_shouldReturnTrueWhenParameterHasAuthenticatedMemberAnnotation() {
-        when(parameter.hasParameterAnnotation(AuthenticatedMember.class)).thenReturn(true);
+        when(parameter.hasParameterAnnotation(AuthenticatedUser.class)).thenReturn(true);
 
         boolean result = resolver.supportsParameter(parameter);
 
@@ -45,7 +45,7 @@ public class AuthenticatedMemberResolverTest {
     @Test
     @DisplayName(("AuthenticatedMember 파라미터 어노테이션이 없으면 false를 반환한다."))
     void testSupportsParameter_shouldReturnFalseWhenParameterDoesNotHaveAuthenticatedMemberAnnotation() {
-        when(parameter.hasParameterAnnotation(AuthenticatedMember.class)).thenReturn(false);
+        when(parameter.hasParameterAnnotation(AuthenticatedUser.class)).thenReturn(false);
 
         boolean result = resolver.supportsParameter(parameter);
 

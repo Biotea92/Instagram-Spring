@@ -121,4 +121,36 @@ class AuthControllerDocsTest {
                         )
                 ));
     }
+
+    @Test
+    @DisplayName("reissue 요청시 토큰을 재발급한다.")
+    void reissueToken() throws Exception {
+        String refreshToken = "valid_refresh_token";
+        String newRefreshToken = "new_refresh_token";
+        LoginDto loginDto = new LoginDto("new_access_token", newRefreshToken);
+        when(authService.reissueToken(refreshToken)).thenReturn(loginDto);
+
+        mockMvc.perform(post("/api/auth/reissueToken")
+                        .cookie(new Cookie("refreshToken", refreshToken)))
+                .andExpect(status().isOk())
+                .andExpect(cookie().value("refreshToken", newRefreshToken))
+                .andExpect(cookie().maxAge("refreshToken", 604800))
+                .andExpect(cookie().httpOnly("refreshToken", true))
+                .andExpect(cookie().secure("refreshToken", true))
+                .andExpect(cookie().path("refreshToken", "/"))
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        requestCookies(
+                                cookieWithName("refreshToken").description("Refresh Token cookie")
+                        ),
+                        responseFields(
+                                fieldWithPath("accessToken").description("Access Token")
+                        ),
+                        responseHeaders(
+                                headerWithName("Set-Cookie").description("Refresh Token header")
+                        ),
+                        responseCookies(
+                                cookieWithName("refreshToken").description("Refresh Token cookie")
+                        )
+                ));
+    }
 }

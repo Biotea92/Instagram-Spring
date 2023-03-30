@@ -14,13 +14,13 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
 @RequiredArgsConstructor
-public class AuthenticatedMemberResolver implements HandlerMethodArgumentResolver {
+public class AuthenticatedUserResolver implements HandlerMethodArgumentResolver {
 
     private final TokenProvider tokenProvider;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(AuthenticatedMember.class);
+        return parameter.hasParameterAnnotation(AuthenticatedUser.class);
     }
 
     @Override
