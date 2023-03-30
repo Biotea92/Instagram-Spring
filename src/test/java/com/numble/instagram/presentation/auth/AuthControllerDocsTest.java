@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.numble.instagram.application.auth.AuthService;
 import com.numble.instagram.dto.common.LoginDto;
 import com.numble.instagram.dto.request.auth.LoginRequest;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -19,20 +21,20 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.cookies.CookieDocumentation.cookieWithName;
-import static org.springframework.restdocs.cookies.CookieDocumentation.responseCookies;
+import static org.springframework.restdocs.cookies.CookieDocumentation.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyHeaders;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.cookie;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @ExtendWith({RestDocumentationExtension.class, MockitoExtension.class})
@@ -88,10 +90,34 @@ class AuthControllerDocsTest {
                                 fieldWithPath("accessToken").description("Access Token")
                         ),
                         responseHeaders(
-                                headerWithName("Set-Cookie").description("Refresh Token")
+                                headerWithName("Set-Cookie").description("Refresh Token header")
                         ),
                         responseCookies(
-                                cookieWithName("refreshToken").description("Refresh Token")
+                                cookieWithName("refreshToken").description("Refresh Token cookie")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("logout 요청시 로그아웃 되어야한다.")
+    void logout() throws Exception {
+        String refreshToken = "valid_refresh_token";
+
+        mockMvc.perform(get("/api/auth/logout")
+                        .cookie(new Cookie("refreshToken", refreshToken)))
+                .andExpect(status().isNoContent())
+                .andExpect(header().exists(HttpHeaders.SET_COOKIE))
+                .andExpect(header().string(HttpHeaders.SET_COOKIE, containsString("refreshToken")))
+                .andExpect(header().string(HttpHeaders.SET_COOKIE, containsString("Max-Age=0")))
+                .andExpect(header().string(HttpHeaders.SET_COOKIE, containsString("HttpOnly")))
+                .andExpect(header().string(HttpHeaders.SET_COOKIE, containsString("Secure")))
+                .andExpect(header().string(HttpHeaders.SET_COOKIE, containsString("Path=/")))
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        requestCookies(
+                                cookieWithName("refreshToken").description("Refresh Token cookie")
+                        ),
+                        responseHeaders(
+                                headerWithName("Set-Cookie").description("Refresh Token header")
                         )
                 ));
     }

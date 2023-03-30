@@ -15,3 +15,15 @@ include::{snippets}/auth/login/response-fields.adoc[]
 include::{snippets}/auth/login/response-headers.adoc[]
 - cookie
 include::{snippets}/auth/login/response-cookies.adoc[]
+
+=== Logout
+
+==== Request
+include::{snippets}/auth/logout/http-request.adoc[]
+- cookie
+include::{snippets}/auth/logout/request-cookies.adoc[]
+
+==== Response
+include::{snippets}/auth/logout/http-response.adoc[]
+- header
+include::{snippets}/auth/logout/response-headers.adoc[]
