@@ -11,7 +11,7 @@ import java.time.Duration;
 @Component
 public class RefreshTokenCookieProvider {
 
-    private static final String REFRESH_TOKEN = "refreshToken";
+    protected static final String REFRESH_TOKEN = "refreshToken";
     private static final int REMOVAL_MAX_AGE = 0;
 
     private final long validTimeInDays;
