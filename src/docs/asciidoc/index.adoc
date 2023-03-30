@@ -3,7 +3,7 @@
 :icons: font
 :source-highlighter: highlights
 :toc: left
-:toclevels: 4
+:toclevels: 2
 :sectlinks:
 
 include::auth.adoc[]

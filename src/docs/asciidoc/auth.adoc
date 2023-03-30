@@ -1,7 +1,8 @@
-== Auth
+== *Auth*
 
 === Login
 
+'''
 ==== Request
 include::{snippets}/auth/login/http-request.adoc[]
 - body
@@ -15,6 +16,9 @@ include::{snippets}/auth/login/response-fields.adoc[]
 include::{snippets}/auth/login/response-headers.adoc[]
 - cookie
 include::{snippets}/auth/login/response-cookies.adoc[]
+
+
+'''
 
 === Logout
 
