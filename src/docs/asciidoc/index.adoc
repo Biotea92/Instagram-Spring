@@ -9,3 +9,5 @@
 include::auth.adoc[]
 
 include::user.adoc[]
+
+include::follow.adoc[]

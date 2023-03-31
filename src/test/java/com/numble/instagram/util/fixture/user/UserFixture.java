@@ -28,4 +28,25 @@ public class UserFixture {
 
         return new EasyRandom(param).nextObject(User.class);
     }
+
+    public static User create(Long userId, String nickname) {
+        var idPredicate = named("id")
+                .and(ofType(Long.class))
+                .and(inClass(User.class));
+
+        var nicknamePredicate = named("nickname")
+                .and(ofType(String.class))
+                .and(inClass(User.class));
+
+        var passwordPredicate = named("password")
+                .and(ofType(String.class))
+                .and(inClass(User.class));
+
+        var param = new EasyRandomParameters()
+                .randomize(idPredicate, () -> userId)
+                .randomize(nicknamePredicate, () -> nickname)
+                .excludeField(passwordPredicate);
+
+        return new EasyRandom(param).nextObject(User.class);
+    }
 }
