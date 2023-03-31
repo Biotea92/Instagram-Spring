@@ -1,6 +1,6 @@
 package com.numble.instagram.config;
 
-import com.numble.instagram.presentation.auth.AuthenticatedMemberResolver;
+import com.numble.instagram.presentation.auth.AuthenticatedUserResolver;
 import com.numble.instagram.presentation.auth.AuthenticationInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -21,13 +21,13 @@ import static org.springframework.http.HttpHeaders.SET_COOKIE;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-    private final AuthenticatedMemberResolver authenticatedMemberResolver;
+    private final AuthenticatedUserResolver authenticatedUserResolver;
     private final AuthenticationInterceptor authenticationInterceptor;
     private final static String FRONT_END_LOCAL = "http://localhost:3000";
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(authenticatedMemberResolver);
+        resolvers.add(authenticatedUserResolver);
     }
 
     @Override
