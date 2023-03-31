@@ -64,15 +64,15 @@ class FollowControllerDocTest {
                 .build();
 
         when(interceptor.preHandle(any(),any(),any())).thenReturn(true);
+        when(authenticatedUserResolver.supportsParameter(any())).thenReturn(true);
     }
 
     @Test
-    @DisplayName("팔로우는 완료되어야 한다.")
-    void follow() throws Exception {
+    @DisplayName("언팔로우는 완료되어야 한다.")
+    void unfollow() throws Exception {
         Long fromUserId = 1L;
         Long toUserId = 2L;
 
-        when(authenticatedUserResolver.supportsParameter(any())).thenReturn(true);
         when(authenticatedUserResolver.resolveArgument(any(),any(),any(),any())).thenReturn(fromUserId);
         given(destroyFollowUserUsecase.execute(eq(fromUserId), eq(toUserId))).willReturn(toUserId);
 
@@ -92,12 +92,11 @@ class FollowControllerDocTest {
     }
 
     @Test
-    @DisplayName("언팔로우는 완료되어야 한다.")
-    void unfollow() throws Exception {
+    @DisplayName("팔로우는 완료되어야 한다.")
+    void follow() throws Exception {
         Long fromUserId = 1L;
         Long toUserId = 2L;
 
-        when(authenticatedUserResolver.supportsParameter(any())).thenReturn(true);
         when(authenticatedUserResolver.resolveArgument(any(),any(),any(),any())).thenReturn(fromUserId);
         given(createFollowUserUsecase.execute(eq(fromUserId), eq(toUserId))).willReturn(toUserId);
 
