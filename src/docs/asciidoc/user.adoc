@@ -1,0 +1,22 @@
+== *User*
+
+'''
+
+=== 회원가입
+
+==== Request
+include::{snippets}/user/join/http-request.adoc[]
+- param
+
+현재 rest-docs 3.0 버전에서 requestParameters를 지원하지 않고 formParameters, queryParameters로 나뉘면서
+multipart 요청시 form-data가 정상적으로 작동하지 않는 현상 때문에 multipart 요청시 parameter를 docs로 만들지 못하고 있습니다.
+
+회원 가입시 필요한 form-data는 nickname(String)과 password(String) 입니다. 감사합니다.
+
+- part
+include::{snippets}/user/join/request-parts.adoc[]
+
+==== Response
+include::{snippets}/user/join/http-response.adoc[]
+- body
+include::{snippets}/user/join/response-fields.adoc[]
