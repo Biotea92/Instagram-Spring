@@ -1,6 +1,7 @@
 package com.numble.instagram.presentation.follow;
 
 import com.numble.instagram.application.usecase.CreateFollowUserUsecase;
+import com.numble.instagram.application.usecase.DestroyFollowUserUsecase;
 import com.numble.instagram.presentation.auth.AuthenticatedUserResolver;
 import com.numble.instagram.presentation.auth.AuthenticationInterceptor;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +44,8 @@ class FollowControllerDocTest {
     @MockBean
     private CreateFollowUserUsecase createFollowUserUsecase;
     @MockBean
+    private DestroyFollowUserUsecase destroyFollowUserUsecase;
+    @MockBean
     private AuthenticationInterceptor interceptor;
     @MockBean
     private AuthenticatedUserResolver authenticatedUserResolver;
@@ -66,6 +69,31 @@ class FollowControllerDocTest {
     @Test
     @DisplayName("팔로우는 완료되어야 한다.")
     void follow() throws Exception {
+        Long fromUserId = 1L;
+        Long toUserId = 2L;
+
+        when(authenticatedUserResolver.supportsParameter(any())).thenReturn(true);
+        when(authenticatedUserResolver.resolveArgument(any(),any(),any(),any())).thenReturn(fromUserId);
+        given(destroyFollowUserUsecase.execute(eq(fromUserId), eq(toUserId))).willReturn(toUserId);
+
+        mockMvc.perform(post("/api/follow/unfollow/{toUserId}", toUserId)
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer access-token"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.userId").value(toUserId))
+                .andDo(print())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("toUserId").description("언팔로우 할 유저 id")
+                        ),
+                        responseFields(
+                                fieldWithPath("userId").description("언팔로우 한 유저 id")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("언팔로우는 완료되어야 한다.")
+    void unfollow() throws Exception {
         Long fromUserId = 1L;
         Long toUserId = 2L;
 

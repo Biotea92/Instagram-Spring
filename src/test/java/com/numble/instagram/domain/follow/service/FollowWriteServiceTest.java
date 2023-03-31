@@ -4,6 +4,7 @@ import com.numble.instagram.domain.follow.entity.Follow;
 import com.numble.instagram.domain.follow.repository.FollowRepository;
 import com.numble.instagram.domain.user.entity.User;
 import com.numble.instagram.exception.badrequest.AlreadyFollowedUserException;
+import com.numble.instagram.exception.badrequest.NotFollowedUserException;
 import com.numble.instagram.util.fixture.follow.FollowFixture;
 import com.numble.instagram.util.fixture.user.UserFixture;
 import org.junit.jupiter.api.DisplayName;
@@ -53,5 +54,28 @@ class FollowWriteServiceTest {
         when(followRepository.findByFromUserAndToUser(fromUser, toUser)).thenReturn(Optional.of(alreadyFollowedFollow));
 
         assertThrows(AlreadyFollowedUserException.class, () -> followWriteService.follow(fromUser, toUser));
+    }
+
+    @Test
+    @DisplayName("언팔로우가 완료되어야 한다.")
+    void unfollow() {
+        User fromUser = UserFixture.create(1L, "user1");
+        User toUser = UserFixture.create(2L, "user2");
+        Follow followedFollow = FollowFixture.create(fromUser, toUser);
+
+        when(followRepository.findByFromUserAndToUser(fromUser, toUser)).thenReturn(Optional.of(followedFollow));
+
+        Long result = followWriteService.unfollow(fromUser, toUser);
+        assertEquals(toUser.getId(), result);
+    }
+
+    @Test
+    @DisplayName("팔로우가 아니면 언팔로우 할 수 없다.")
+    void followedWillNotUnfollow() {
+        User fromUser = UserFixture.create(1L, "user1");
+        User toUser = UserFixture.create(2L, "user2");
+
+        when(followRepository.findByFromUserAndToUser(fromUser, toUser)).thenReturn(Optional.empty());
+        assertThrows(NotFollowedUserException.class, () -> followWriteService.unfollow(fromUser, toUser));
     }
 }
