@@ -14,8 +14,8 @@ public class FollowWriteService {
 
     private final FollowRepository followRepository;
 
-    public void follow(User fromUser, User toUser) {
+    public Follow follow(User fromUser, User toUser) {
         Follow follow = Follow.create(fromUser, toUser);
-        followRepository.save(follow);
+        return followRepository.save(follow);
     }
 }

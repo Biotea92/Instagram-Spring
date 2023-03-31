@@ -21,7 +21,7 @@ public class FollowController {
     @PostMapping("/{toUserId}")
     public FollowDto follow(@AuthenticatedUser Long fromUserId,
                             @PathVariable Long toUserId) {
-        createFollowUserUsecase.execute(fromUserId, toUserId);
-        return FollowDto.from(toUserId);
+        Long savedToUserId = createFollowUserUsecase.execute(fromUserId, toUserId);
+        return FollowDto.from(savedToUserId);
     }
 }

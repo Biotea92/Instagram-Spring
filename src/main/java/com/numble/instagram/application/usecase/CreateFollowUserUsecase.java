@@ -13,9 +13,9 @@ public class CreateFollowUserUsecase {
     private final UserReadService userReadService;
     private final FollowWriteService followWriteService;
 
-    public void execute(Long fromUserId, Long toUserId) {
+    public Long execute(Long fromUserId, Long toUserId) {
         User fromUser = userReadService.getUser(fromUserId);
         User toUser = userReadService.getUser(toUserId);
-        followWriteService.follow(fromUser, toUser);
+        return followWriteService.follow(fromUser, toUser).getToUser().getId();
     }
 }
