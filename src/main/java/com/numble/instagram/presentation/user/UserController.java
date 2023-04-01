@@ -8,7 +8,9 @@ import com.numble.instagram.presentation.auth.AuthenticatedUser;
 import com.numble.instagram.presentation.auth.Login;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class UserController {
     @Login
     @PostMapping("/edit")
     public UserResponse edit(@AuthenticatedUser Long userId,
-                             @Validated @RequestBody UserEditRequest userEditRequest) {
+                             @Validated UserEditRequest userEditRequest) {
         return userWriteService.edit(userId, userEditRequest.nickname(), userEditRequest.profileImageFile());
     }
 }
