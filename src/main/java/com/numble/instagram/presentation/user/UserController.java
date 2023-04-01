@@ -1,6 +1,6 @@
 package com.numble.instagram.presentation.user;
 
-import com.numble.instagram.application.usecase.GetFollowingAndFollowerCountUsecase;
+import com.numble.instagram.application.usecase.GetUserProfileUsecase;
 import com.numble.instagram.domain.user.service.UserWriteService;
 import com.numble.instagram.dto.request.user.UserEditRequest;
 import com.numble.instagram.dto.request.user.UserJoinRequest;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserWriteService userWriteService;
-    private final GetFollowingAndFollowerCountUsecase getFollowingAndFollowerCountUsecase;
+    private final GetUserProfileUsecase getUserProfileUsecase;
 
     @PostMapping
     public UserResponse join(@Validated UserJoinRequest userJoinRequest) {
@@ -34,6 +34,6 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public UserDetailResponse get(@PathVariable Long userId) {
-        return getFollowingAndFollowerCountUsecase.execute(userId);
+        return getUserProfileUsecase.execute(userId);
     }
 }

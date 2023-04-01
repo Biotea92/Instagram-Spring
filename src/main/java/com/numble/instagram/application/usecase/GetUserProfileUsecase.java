@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class GetFollowingAndFollowerCountUsecase {
+public class GetUserProfileUsecase {
 
     private final UserReadService userReadService;
     private final FollowReadService followReadService;
