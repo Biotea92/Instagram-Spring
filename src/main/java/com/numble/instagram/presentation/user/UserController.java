@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @Login
-    @PutMapping
+    @PostMapping("/edit")
     public UserResponse edit(@AuthenticatedUser Long userId,
                              @Validated @RequestBody UserEditRequest userEditRequest) {
         return userWriteService.edit(userId, userEditRequest.nickname(), userEditRequest.profileImageFile());
