@@ -1,0 +1,33 @@
+== *Follow*
+
+'''
+
+=== 팔로우
+
+==== Request
+include::{snippets}/follow/follow/http-request.adoc[]
+
+- path parameter
+
+include::{snippets}/follow/follow/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/follow/follow/http-response.adoc[]
+- body
+include::{snippets}/follow/follow/response-fields.adoc[]
+
+'''
+
+=== 언팔로우
+
+==== Request
+include::{snippets}/follow/unfollow/http-request.adoc[]
+
+- path parameter
+
+include::{snippets}/follow/unfollow/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/follow/unfollow/http-response.adoc[]
+- body
+include::{snippets}/follow/unfollow/response-fields.adoc[]

@@ -2,6 +2,7 @@ package com.numble.instagram.domain.follow.entity;
 
 import com.numble.instagram.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -36,5 +37,15 @@ public class Follow {
     @PrePersist
     private void onPrePersist() {
         this.followedAt = LocalDateTime.now();
+    }
+
+    @Builder
+    public Follow(User fromUser, User toUser) {
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+    }
+
+    public static Follow create(User fromUser, User toUser) {
+        return Follow.builder().fromUser(fromUser).toUser(toUser).build();
     }
 }

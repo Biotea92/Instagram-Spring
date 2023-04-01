@@ -4,6 +4,7 @@ import com.numble.instagram.domain.user.entity.User;
 import com.numble.instagram.domain.user.repository.UserRepository;
 import com.numble.instagram.dto.request.user.UserJoinRequest;
 import com.numble.instagram.dto.response.user.UserResponse;
+import com.numble.instagram.exception.badrequest.DuplicatedUserException;
 import com.numble.instagram.support.file.FileStore;
 import com.numble.instagram.util.fixture.user.UserFixture;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -84,5 +86,16 @@ class UserWriteServiceTest {
 
         assertEquals(newNickname, updatedUser.nickname());
         assertEquals(existingUser.getProfileImageUrl(), updatedUser.profileImageUrl());
+    }
+
+    @Test
+    @DisplayName("중복된 닉네임이 존재하면 DuplicatedUserException이 발생한다.")
+    void join_duplicatedUser() {
+        UserJoinRequest userJoinRequest = new UserJoinRequest("testuser", "password", null);
+
+        User duplicatedUser = User.create("testuser", "passwrod", "https://profile");
+        when(userRepository.findByNickname("testuser")).thenReturn(Optional.of(duplicatedUser));
+
+        assertThrows(DuplicatedUserException.class, () -> userWriteService.join(userJoinRequest));
     }
 }

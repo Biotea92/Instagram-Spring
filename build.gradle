@@ -1,8 +1,8 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.0.5'
-	id 'io.spring.dependency-management' version '1.1.0'
-	id "org.asciidoctor.jvm.convert" version "3.3.2"
+    id 'java'
+    id 'org.springframework.boot' version '3.0.5'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.numble'
@@ -10,76 +10,76 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-	asciidoctorExtensions
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    asciidoctorExtensions
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	snippetsDir = file('build/generated-snippets')
+    snippetsDir = file('build/generated-snippets')
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.security:spring-security-crypto'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	  implementation 'org.springframework.boot:spring-boot-starter-web'
+	  implementation 'org.springframework.security:spring-security-crypto'
+	  implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'com.mysql:mysql-connector-j'
 
-	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
-	testImplementation 'org.jeasy:easy-random-core:5.0.0'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.jeasy:easy-random-core:5.0.0'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 test {
-	outputs.dir snippetsDir
-	useJUnitPlatform()
+    outputs.dir snippetsDir
+    useJUnitPlatform()
 }
 
 asciidoctor {
-	configurations 'asciidoctorExtensions'
-	inputs.dir snippetsDir
-	sources {
-		include("**/index.adoc")
-	}
-	baseDirFollowsSourceFile()
-	dependsOn test
+    configurations 'asciidoctorExtensions'
+    inputs.dir snippetsDir
+    sources {
+        include("**/index.adoc")
+    }
+    baseDirFollowsSourceFile()
+    dependsOn test
 }
 
 task copyDocument(type: Copy) {
-	dependsOn asciidoctor
-	from file("${asciidoctor.outputDir}")
-	into file("build/resources/main/static/docs")
+    dependsOn asciidoctor
+    from file("${asciidoctor.outputDir}")
+    into file("build/resources/main/static/docs")
 }
 
 bootJar {
-	dependsOn copyDocument
+    dependsOn copyDocument
 }
 
 jar {
-	enabled = false
+    enabled = false
 }
 
 task dolocal {
-	dependsOn asciidoctor
-	copy {
-		from asciidoctor.outputDir
-		into "src/main/resources/static/docs"
-	}
+    dependsOn asciidoctor
+    copy {
+        from asciidoctor.outputDir
+        into "src/main/resources/static/docs"
+    }
 }
