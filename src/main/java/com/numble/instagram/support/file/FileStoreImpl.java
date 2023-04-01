@@ -33,7 +33,7 @@ public class FileStoreImpl implements FileStore {
         if (imageUrl.equals(DEFAULT_IMAGE)) {
             return;
         }
-        // TODO delete login;
+        // TODO delete logic;
     }
 
     private static void validateContentTypeImage(MultipartFile multipartFile) {
