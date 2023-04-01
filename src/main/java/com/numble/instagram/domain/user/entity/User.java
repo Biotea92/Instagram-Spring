@@ -50,4 +50,14 @@ public class User {
                 .profileImageUrl(profileImageUrl)
                 .build();
     }
+
+    public void changeNickname(String newNickname) {
+        if (!nickname.equals(newNickname)) {
+            this.nickname = newNickname;
+        }
+    }
+
+    public void changeProfileImageUrl(String newProfileImageUrl) {
+        this.profileImageUrl = newProfileImageUrl;
+    }
 }
