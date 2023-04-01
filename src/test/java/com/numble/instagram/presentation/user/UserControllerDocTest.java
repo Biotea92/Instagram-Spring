@@ -90,4 +90,37 @@ class UserControllerDocTest {
                         )
                 ));
     }
+
+    @Test
+    @DisplayName("프로필 수정은 완료되어야한다.")
+    void edit() throws Exception {
+        MockMultipartFile profileImageFile = new MockMultipartFile("profileImageFile", "image".getBytes());
+
+        UserResponse expectedUserResponse = new UserResponse(
+                1L, "new_test_user", "https://new_test_image_url", LocalDateTime.now().minusDays(1));
+        given(userWriteService.edit(1L, "new_test_user", profileImageFile))
+                .willReturn(expectedUserResponse);
+
+        mockMvc.perform(multipart("/api/user/edit")
+                        .file(profileImageFile)
+                        .param("nickname", "new_test_user")
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        requestParts(
+                                partWithName("profileImageFile").description("파일 업로드")
+                        ),
+//                        formParameters(
+//                                parameterWithName("email").description("이메일"),
+//                                parameterWithName("password").description("비밀번호")
+//                        ),
+                        responseFields(
+                                fieldWithPath("id").description("유저 id"),
+                                fieldWithPath("nickname").description("유저 nickname"),
+                                fieldWithPath("profileImageUrl").description("유저 프로필 이미지 Url"),
+                                fieldWithPath("joinedAt").description("유저 가입일")
+                        )
+                ));
+    }
 }
