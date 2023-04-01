@@ -33,11 +33,15 @@ public class UserWriteService {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
         user.changeNickname(newNickname);
-        if (!newProfileImageFile.isEmpty()) {
+        checkImageFileAndChange(newProfileImageFile, user);
+        return UserResponse.from(user);
+    }
+
+    private void checkImageFileAndChange(MultipartFile newProfileImageFile, User user) {
+        if (newProfileImageFile == null || !newProfileImageFile.isEmpty()) {
             fileStore.deleteFile(user.getProfileImageUrl());
             String newProfileImageUrl = fileStore.uploadImage(newProfileImageFile);
             user.changeProfileImageUrl(newProfileImageUrl);
         }
-        return UserResponse.from(user);
     }
 }
