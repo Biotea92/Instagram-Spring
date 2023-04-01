@@ -49,4 +49,8 @@ public class UserFixture {
 
         return new EasyRandom(param).nextObject(User.class);
     }
+
+    public static User create(String nickname) {
+        return new User(nickname, "1234", "https://");
+    }
 }

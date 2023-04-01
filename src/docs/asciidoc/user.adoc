@@ -41,3 +41,20 @@ include::{snippets}/user/edit/request-parts.adoc[]
 include::{snippets}/user/edit/http-response.adoc[]
 - body
 include::{snippets}/user/edit/response-fields.adoc[]
+
+
+'''
+
+=== 프로필 조회
+
+==== Request
+include::{snippets}/user/get-user-profile/http-request.adoc[]
+
+- path parameter
+
+include::{snippets}/user/get-user-profile/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/user/get-user-profile/http-request.adoc[]
+- body
+include::{snippets}/user/get-user-profile/response-fields.adoc[]
