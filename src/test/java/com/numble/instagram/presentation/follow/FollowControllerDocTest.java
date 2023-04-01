@@ -1,9 +1,8 @@
 package com.numble.instagram.presentation.follow;
 
+import com.numble.instagram.application.auth.token.TokenProvider;
 import com.numble.instagram.application.usecase.CreateFollowUserUsecase;
 import com.numble.instagram.application.usecase.DestroyFollowUserUsecase;
-import com.numble.instagram.presentation.auth.AuthenticatedUserResolver;
-import com.numble.instagram.presentation.auth.AuthenticationInterceptor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,10 +18,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -46,9 +43,7 @@ class FollowControllerDocTest {
     @MockBean
     private DestroyFollowUserUsecase destroyFollowUserUsecase;
     @MockBean
-    private AuthenticationInterceptor interceptor;
-    @MockBean
-    private AuthenticatedUserResolver authenticatedUserResolver;
+    private TokenProvider tokenProvider;
     @Autowired
     private WebApplicationContext webApplicationContext;
     private static final String DOCUMENT_IDENTIFIER = "follow/{method-name}/";
@@ -62,9 +57,6 @@ class FollowControllerDocTest {
                         .withRequestDefaults(prettyPrint())
                         .withResponseDefaults(prettyPrint(), modifyHeaders().remove("Vary")))
                 .build();
-
-        when(interceptor.preHandle(any(),any(),any())).thenReturn(true);
-        when(authenticatedUserResolver.supportsParameter(any())).thenReturn(true);
     }
 
     @Test
@@ -72,12 +64,13 @@ class FollowControllerDocTest {
     void unfollow() throws Exception {
         Long fromUserId = 1L;
         Long toUserId = 2L;
-
-        when(authenticatedUserResolver.resolveArgument(any(),any(),any(),any())).thenReturn(fromUserId);
+        String authorizationHeader = "Bearer access-token";
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(fromUserId);
         given(destroyFollowUserUsecase.execute(eq(fromUserId), eq(toUserId))).willReturn(toUserId);
 
         mockMvc.perform(post("/api/follow/unfollow/{toUserId}", toUserId)
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer access-token"))
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(toUserId))
                 .andDo(print())
@@ -96,12 +89,13 @@ class FollowControllerDocTest {
     void follow() throws Exception {
         Long fromUserId = 1L;
         Long toUserId = 2L;
-
-        when(authenticatedUserResolver.resolveArgument(any(),any(),any(),any())).thenReturn(fromUserId);
+        String authorizationHeader = "Bearer access-token";
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(fromUserId);
         given(createFollowUserUsecase.execute(eq(fromUserId), eq(toUserId))).willReturn(toUserId);
 
         mockMvc.perform(post("/api/follow/{toUserId}", toUserId)
-                        .header(HttpHeaders.AUTHORIZATION, "Bearer access-token"))
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.userId").value(toUserId))
                 .andDo(print())
