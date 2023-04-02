@@ -84,22 +84,22 @@ class FollowReadServiceTest {
         assertEquals(19, followersFollow.size());
     }
 
-//    @Test
-//    @DisplayName("팔로잉 팔로우들을 가져온다")
-//    void getFollowingsFollow() {
-//        User user = UserFixture.create("user");
-//        userRepository.save(user);
-//
-//        List<Follow> followings = new LinkedList<>();
-//        LongStream.range(1, 20).forEach(i -> {
-//            User FollowingUser = UserFixture.create("followingUser");
-//            userRepository.saveAndFlush(FollowingUser);
-//            followings.add(FollowFixture.create(user, FollowingUser));
-//        });
-//        followRepository.saveAllAndFlush(followings);
-//
-//        List<Follow> followingsFollow = followReadService.getFollowingsFollow(user.getId());
-//
-//        assertEquals(19, followingsFollow.size());
-//    }
+    @Test
+    @DisplayName("팔로잉 팔로우들을 가져온다")
+    void getFollowingsFollow() {
+        User user = UserFixture.create("user");
+        userRepository.save(user);
+
+        List<Follow> followings = new LinkedList<>();
+        LongStream.range(1, 20).forEach(i -> {
+            User FollowingUser = UserFixture.create("followingUser");
+            userRepository.saveAndFlush(FollowingUser);
+            followings.add(FollowFixture.create(user, FollowingUser));
+        });
+        followRepository.saveAllAndFlush(followings);
+
+        List<Follow> followingsFollow = followReadService.getFollowingsFollow(user);
+
+        assertEquals(19, followingsFollow.size());
+    }
 }

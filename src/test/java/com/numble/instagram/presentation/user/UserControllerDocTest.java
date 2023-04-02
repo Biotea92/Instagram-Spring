@@ -1,12 +1,15 @@
 package com.numble.instagram.presentation.user;
 
 import com.numble.instagram.application.auth.token.TokenProvider;
+import com.numble.instagram.application.usecase.user.GetFollowersUsecase;
+import com.numble.instagram.application.usecase.user.GetFollowingsUsecase;
 import com.numble.instagram.application.usecase.user.GetUserProfileUsecase;
 import com.numble.instagram.domain.user.service.UserWriteService;
 import com.numble.instagram.dto.request.user.UserEditRequest;
 import com.numble.instagram.dto.request.user.UserJoinRequest;
 import com.numble.instagram.dto.response.user.UserDetailResponse;
 import com.numble.instagram.dto.response.user.UserResponse;
+import com.numble.instagram.util.fixture.user.UserResponseFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +27,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -36,7 +40,6 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -50,6 +53,10 @@ class UserControllerDocTest {
     private UserWriteService userWriteService;
     @MockBean
     private GetUserProfileUsecase getUserProfileUsecase;
+    @MockBean
+    private GetFollowersUsecase getFollowersUsecase;
+    @MockBean
+    private GetFollowingsUsecase getFollowingsUsecase;
     @Autowired
     private WebApplicationContext webApplicationContext;
     private static final String DOCUMENT_IDENTIFIER = "user/{method-name}/";
@@ -78,7 +85,6 @@ class UserControllerDocTest {
                         .file(profileImageFile)
                         .param("nickname", "test_user")
                         .param("password", "qwer1234"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(DOCUMENT_IDENTIFIER,
                         requestParts(
@@ -116,7 +122,6 @@ class UserControllerDocTest {
                         .file(profileImageFile)
                         .param("nickname", "new_test_user")
                         .header(HttpHeaders.AUTHORIZATION, authorizationHeader))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(DOCUMENT_IDENTIFIER,
                         requestParts(
@@ -144,7 +149,6 @@ class UserControllerDocTest {
         given(getUserProfileUsecase.execute(eq(1L))).willReturn(userDetailResponse);
 
         mockMvc.perform(get("/api/user/{userId}", userId))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document(DOCUMENT_IDENTIFIER,
                         pathParameters(
@@ -155,6 +159,52 @@ class UserControllerDocTest {
                                 fieldWithPath("profileImageUrl").description("프로필 이미지 Url"),
                                 fieldWithPath("follower").description("follower 수"),
                                 fieldWithPath("following").description("following 수")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("사용자의 팔로워 목록 조회는 완료되어야 한다.")
+    void getFollowers() throws Exception {
+        Long userId = 1L;
+        List<UserResponse> responses = List.of(
+                UserResponseFixture.create("follower1"), UserResponseFixture.create("follower2"));
+        given(getFollowersUsecase.execute(eq(userId))).willReturn(responses);
+
+        mockMvc.perform(get("/api/user/{userId}/followers", userId))
+                .andExpect(status().isOk())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("userId").description("조회할 유저 id")
+                        ),
+                        responseFields(
+                                fieldWithPath("[].id").description("유저 id"),
+                                fieldWithPath("[].nickname").description("닉네임"),
+                                fieldWithPath("[].profileImageUrl").description("프로필 이미지 Url"),
+                                fieldWithPath("[].joinedAt").description("유저 가입일")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("사용자의 팔로잉 목록 조회는 완료되어야 한다.")
+    void getFollowings() throws Exception {
+        Long userId = 1L;
+        List<UserResponse> responses = List.of(
+                UserResponseFixture.create("following1"), UserResponseFixture.create("following2"));
+        given(getFollowingsUsecase.execute(eq(userId))).willReturn(responses);
+
+        mockMvc.perform(get("/api/user/{userId}/followings", userId))
+                .andExpect(status().isOk())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("userId").description("조회할 유저 id")
+                        ),
+                        responseFields(
+                                fieldWithPath("[].id").description("유저 id"),
+                                fieldWithPath("[].nickname").description("닉네임"),
+                                fieldWithPath("[].profileImageUrl").description("프로필 이미지 Url"),
+                                fieldWithPath("[].joinedAt").description("유저 가입일")
                         )
                 ));
     }
