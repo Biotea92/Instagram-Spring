@@ -24,7 +24,7 @@ public class FollowReadService {
         return followRepository.getFollowingCount(userId);
     }
 
-    public List<Follow> getFollowers(User toUser) {
+    public List<Follow> getFollowersFollow(User toUser) {
         return followRepository.findByToUser(toUser);
     }
 }

@@ -34,7 +34,6 @@ public class FollowWriteService {
 
     private void checkFollowed(User fromUser, User toUser) {
         Optional<Follow> optionalFollow = followRepository.findByFromUserAndToUser(fromUser, toUser);
-        followRepository.findByFromUserAndToUser(fromUser, toUser);
         if (optionalFollow.isPresent()) {
             throw new AlreadyFollowedUserException();
         }
