@@ -55,6 +55,38 @@ include::{snippets}/user/get-user-profile/http-request.adoc[]
 include::{snippets}/user/get-user-profile/path-parameters.adoc[]
 
 ==== Response
-include::{snippets}/user/get-user-profile/http-request.adoc[]
+include::{snippets}/user/get-user-profile/http-response.adoc[]
 - body
 include::{snippets}/user/get-user-profile/response-fields.adoc[]
+
+'''
+
+=== 팔로워 목록 조회
+
+==== Request
+include::{snippets}/user/get-followers/http-request.adoc[]
+
+- path parameter
+
+include::{snippets}/user/get-followers/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/user/get-followers/http-response.adoc[]
+- body
+include::{snippets}/user/get-followers/response-fields.adoc[]
+
+'''
+
+=== 팔로잉 목록 조회
+
+==== Request
+include::{snippets}/user/get-followings/http-request.adoc[]
+
+- path parameter
+
+include::{snippets}/user/get-followings/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/user/get-followings/http-response.adoc[]
+- body
+include::{snippets}/user/get-followings/response-fields.adoc[]

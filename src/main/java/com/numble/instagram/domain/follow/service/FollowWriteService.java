@@ -18,23 +18,22 @@ public class FollowWriteService {
 
     private final FollowRepository followRepository;
 
-    public Follow follow(User fromUser, User toUser) {
+    public Long follow(User fromUser, User toUser) {
         checkFollowed(fromUser, toUser);
-        Follow follow = Follow.create(fromUser, toUser);
-        return followRepository.save(follow);
+        Follow newFollow = Follow.create(fromUser, toUser);
+        return followRepository.save(newFollow).getToUser().getId();
     }
 
     public Long unfollow(User fromUser, User toUser) {
         Follow followedFollow = followRepository.findByFromUserAndToUser(fromUser, toUser)
                 .orElseThrow(NotFollowedUserException::new);
-        Long toUserId = toUser.getId();
+        Long deletedToUserId = toUser.getId();
         followRepository.delete(followedFollow);
-        return toUserId;
+        return deletedToUserId;
     }
 
     private void checkFollowed(User fromUser, User toUser) {
         Optional<Follow> optionalFollow = followRepository.findByFromUserAndToUser(fromUser, toUser);
-        followRepository.findByFromUserAndToUser(fromUser, toUser);
         if (optionalFollow.isPresent()) {
             throw new AlreadyFollowedUserException();
         }
