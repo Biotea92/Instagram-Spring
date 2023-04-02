@@ -1,7 +1,7 @@
 package com.numble.instagram.presentation.user;
 
 import com.numble.instagram.application.auth.token.TokenProvider;
-import com.numble.instagram.application.usecase.GetUserProfileUsecase;
+import com.numble.instagram.application.usecase.user.GetUserProfileUsecase;
 import com.numble.instagram.domain.user.service.UserWriteService;
 import com.numble.instagram.dto.request.user.UserEditRequest;
 import com.numble.instagram.dto.request.user.UserJoinRequest;

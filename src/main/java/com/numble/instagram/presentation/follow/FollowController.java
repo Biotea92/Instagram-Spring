@@ -1,7 +1,7 @@
 package com.numble.instagram.presentation.follow;
 
-import com.numble.instagram.application.usecase.CreateFollowUserUsecase;
-import com.numble.instagram.application.usecase.DestroyFollowUserUsecase;
+import com.numble.instagram.application.usecase.follow.CreateFollowUserUsecase;
+import com.numble.instagram.application.usecase.follow.DestroyFollowUserUsecase;
 import com.numble.instagram.dto.common.FollowDto;
 import com.numble.instagram.presentation.auth.AuthenticatedUser;
 import com.numble.instagram.presentation.auth.Login;
