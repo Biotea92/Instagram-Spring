@@ -1,5 +1,5 @@
 # 📌 Instagram-Spring
-## [Numble 챌린지] 네카라쿠배 개발자와 함께 Spring으로 인스타그램 서버 만들기
+## [Numble 챌린지] [네카라쿠배 개발자와 함께 Spring으로 인스타그램 서버 만들기](https://www.numble.it/deepdive/38)
 인스타그램의 기능들을 Spring으로 구현하는 서버입니다.  
 Rest API 서버로 좀 더 Spring에 집중하여 구현하기 위해 클라이언트는 따로 있지않습니다.  
 자세한 구현 내용은 [ISSUES](https://github.com/Kwoojong/Instagram-Spring/issues)와 [PR](https://github.com/Kwoojong/Instagram-Spring/pulls)에서 확인하실 수 있습니다. 컨벤션이나 기술적인 해결 방법은 [WIKI](https://github.com/Kwoojong/Instagram-Spring/wiki)에서 확인하실 수 있습니다.
