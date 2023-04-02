@@ -6,9 +6,9 @@ import com.numble.instagram.domain.user.service.UserReadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@RequiredArgsConstructor
 @Service
-public class CreateFollowUserUsecase {
+@RequiredArgsConstructor
+public class DestroyFollowUsecase {
 
     private final UserReadService userReadService;
     private final FollowWriteService followWriteService;
@@ -16,6 +16,6 @@ public class CreateFollowUserUsecase {
     public Long execute(Long fromUserId, Long toUserId) {
         User fromUser = userReadService.getUser(fromUserId);
         User toUser = userReadService.getUser(toUserId);
-        return followWriteService.follow(fromUser, toUser).getToUser().getId();
+        return followWriteService.unfollow(fromUser, toUser);
     }
 }
