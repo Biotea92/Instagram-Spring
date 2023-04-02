@@ -18,10 +18,10 @@ public class FollowWriteService {
 
     private final FollowRepository followRepository;
 
-    public Follow follow(User fromUser, User toUser) {
+    public Long follow(User fromUser, User toUser) {
         checkFollowed(fromUser, toUser);
         Follow follow = Follow.create(fromUser, toUser);
-        return followRepository.save(follow);
+        return followRepository.save(follow).getToUser().getId();
     }
 
     public Long unfollow(User fromUser, User toUser) {
