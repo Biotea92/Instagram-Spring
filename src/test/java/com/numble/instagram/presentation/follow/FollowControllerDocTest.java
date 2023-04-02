@@ -1,8 +1,8 @@
 package com.numble.instagram.presentation.follow;
 
 import com.numble.instagram.application.auth.token.TokenProvider;
-import com.numble.instagram.application.usecase.CreateFollowUserUsecase;
-import com.numble.instagram.application.usecase.DestroyFollowUserUsecase;
+import com.numble.instagram.application.usecase.follow.CreateFollowUsecase;
+import com.numble.instagram.application.usecase.follow.DestroyFollowUsecase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -39,9 +39,9 @@ class FollowControllerDocTest {
 
     private MockMvc mockMvc;
     @MockBean
-    private CreateFollowUserUsecase createFollowUserUsecase;
+    private CreateFollowUsecase createFollowUsecase;
     @MockBean
-    private DestroyFollowUserUsecase destroyFollowUserUsecase;
+    private DestroyFollowUsecase destroyFollowUsecase;
     @MockBean
     private TokenProvider tokenProvider;
     @Autowired
@@ -67,7 +67,7 @@ class FollowControllerDocTest {
         String authorizationHeader = "Bearer access-token";
         given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
         given(tokenProvider.getUserId(authorizationHeader)).willReturn(fromUserId);
-        given(destroyFollowUserUsecase.execute(eq(fromUserId), eq(toUserId))).willReturn(toUserId);
+        given(destroyFollowUsecase.execute(eq(fromUserId), eq(toUserId))).willReturn(toUserId);
 
         mockMvc.perform(post("/api/follow/unfollow/{toUserId}", toUserId)
                         .header(HttpHeaders.AUTHORIZATION, authorizationHeader))
@@ -92,7 +92,7 @@ class FollowControllerDocTest {
         String authorizationHeader = "Bearer access-token";
         given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
         given(tokenProvider.getUserId(authorizationHeader)).willReturn(fromUserId);
-        given(createFollowUserUsecase.execute(eq(fromUserId), eq(toUserId))).willReturn(toUserId);
+        given(createFollowUsecase.execute(eq(fromUserId), eq(toUserId))).willReturn(toUserId);
 
         mockMvc.perform(post("/api/follow/{toUserId}", toUserId)
                         .header(HttpHeaders.AUTHORIZATION, authorizationHeader))

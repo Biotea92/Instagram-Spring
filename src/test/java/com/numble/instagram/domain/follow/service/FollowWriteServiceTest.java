@@ -31,7 +31,7 @@ class FollowWriteServiceTest {
     private FollowRepository followRepository;
 
     @Test
-    @DisplayName("팔로우는 완료 되어야 한다. ")
+    @DisplayName("팔로우는 완료 되어야 한다.")
     void followTest() {
         User fromUser = UserFixture.create(1L, "user1");
         User toUser = UserFixture.create(2L, "user2");
@@ -39,9 +39,9 @@ class FollowWriteServiceTest {
 
         when(followRepository.save(any(Follow.class))).thenReturn(follow);
 
-        Follow savedFollow = followWriteService.follow(fromUser, toUser);
+        Long savedToUserId = followWriteService.follow(fromUser, toUser);
 
-        assertEquals(follow, savedFollow);
+        assertEquals(toUser.getId(), savedToUserId);
     }
 
     @Test
