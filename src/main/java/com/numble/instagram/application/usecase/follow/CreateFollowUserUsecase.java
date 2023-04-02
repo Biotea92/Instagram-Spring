@@ -1,4 +1,4 @@
-package com.numble.instagram.application.usecase;
+package com.numble.instagram.application.usecase.follow;
 
 import com.numble.instagram.domain.follow.service.FollowWriteService;
 import com.numble.instagram.domain.user.entity.User;
