@@ -5,9 +5,8 @@ import com.numble.instagram.application.auth.token.RefreshTokenProvider;
 import com.numble.instagram.application.auth.token.RefreshTokenRepository;
 import com.numble.instagram.application.auth.token.TokenProvider;
 import com.numble.instagram.domain.user.entity.User;
-import com.numble.instagram.domain.user.repository.UserRepository;
+import com.numble.instagram.domain.user.service.UserReadService;
 import com.numble.instagram.dto.common.LoginDto;
-import com.numble.instagram.exception.notfound.UserNotFoundException;
 import com.numble.instagram.exception.unauthorized.PasswordMismatchException;
 import com.numble.instagram.exception.unauthorized.RefreshTokenExpiredException;
 import com.numble.instagram.exception.unauthorized.RefreshTokenNotExistsException;
@@ -37,7 +36,7 @@ class AuthServiceTest {
     @Mock
     private RefreshTokenRepository refreshTokenRepository;
     @Mock
-    private UserRepository userRepository;
+    private UserReadService userReadService;
     @Mock
     private PasswordEncoder passwordEncoder;
     @InjectMocks
@@ -54,7 +53,7 @@ class AuthServiceTest {
         RefreshToken refreshToken = RefreshTokenFixture.create(refreshTokenValue, userId, LocalDateTime.now().plusDays(7));
         User user = UserFixture.create(userId, nickname, password);
 
-        when(userRepository.findByNickname(nickname)).thenReturn(Optional.of(user));
+        when(userReadService.getUserByNickname(nickname)).thenReturn(user);
         when(passwordEncoder.matches(password, user.getPassword())).thenReturn(true);
         when(tokenProvider.createAccessToken(userId)).thenReturn(accessToken);
         when(refreshTokenProvider.createToken(userId)).thenReturn(refreshToken);
@@ -74,20 +73,10 @@ class AuthServiceTest {
         String password = "password123";
         long userId = 1L;
         User user = UserFixture.create(userId, nickname, password);
-        when(userRepository.findByNickname(nickname)).thenReturn(Optional.of(user));
+        when(userReadService.getUserByNickname(nickname)).thenReturn(user);
         when(passwordEncoder.matches(password, user.getPassword())).thenReturn(false);
 
         assertThrows(PasswordMismatchException.class, () -> authService.login(nickname, password));
-    }
-
-    @Test
-    @DisplayName("존재하지 않은 User로 로그인을 시도하면 UserNotFoundException이 발생한다.")
-    void loginWithNonexistentUserThrowsUserNotFoundException() {
-        String nickname = "test_user";
-        String password = "password123";
-        when(userRepository.findByNickname(nickname)).thenReturn(Optional.empty());
-
-        assertThrows(UserNotFoundException.class, () -> authService.login(nickname, password));
     }
 
     @Test
