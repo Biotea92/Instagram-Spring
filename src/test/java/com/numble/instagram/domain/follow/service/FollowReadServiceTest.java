@@ -55,13 +55,51 @@ class FollowReadServiceTest {
         List<Follow> followers = new LinkedList<>();
         LongStream.range(1, 20).forEach(i -> {
             User followerUser = UserFixture.create("followerUser");
-            userRepository.save(followerUser);
+            userRepository.saveAndFlush(followerUser);
             followers.add(FollowFixture.create(followerUser, user));
         });
-        followRepository.saveAll(followers);
+        followRepository.saveAllAndFlush(followers);
 
         Long followingCount = followReadService.getFollowerCount(user.getId());
 
         assertEquals(19L, followingCount);
     }
+
+    @Test
+    @DisplayName("팔로워 팔로우들을 가져온다.")
+    void getFollowersFollow() {
+        User user = UserFixture.create("user");
+        userRepository.save(user);
+
+        List<Follow> followers = new LinkedList<>();
+        LongStream.range(1, 20).forEach(i -> {
+            User followerUser = UserFixture.create("followerUser");
+            userRepository.saveAndFlush(followerUser);
+            followers.add(FollowFixture.create(followerUser, user));
+        });
+        followRepository.saveAllAndFlush(followers);
+
+        List<Follow> followersFollow = followReadService.getFollowersFollow(user);
+
+        assertEquals(19, followersFollow.size());
+    }
+
+//    @Test
+//    @DisplayName("팔로잉 팔로우들을 가져온다")
+//    void getFollowingsFollow() {
+//        User user = UserFixture.create("user");
+//        userRepository.save(user);
+//
+//        List<Follow> followings = new LinkedList<>();
+//        LongStream.range(1, 20).forEach(i -> {
+//            User FollowingUser = UserFixture.create("followingUser");
+//            userRepository.saveAndFlush(FollowingUser);
+//            followings.add(FollowFixture.create(user, FollowingUser));
+//        });
+//        followRepository.saveAllAndFlush(followings);
+//
+//        List<Follow> followingsFollow = followReadService.getFollowingsFollow(user.getId());
+//
+//        assertEquals(19, followingsFollow.size());
+//    }
 }
