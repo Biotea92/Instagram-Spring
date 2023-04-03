@@ -6,13 +6,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 public record PostCreateRequest(@NotBlank String content, MultipartFile postImageFile) {
 
-    public PostCreateRequest(@NotBlank String content, MultipartFile postImageFile) {
+    public PostCreateRequest(String content, MultipartFile postImageFile) {
         this.content = content;
-        validatePostImageFile();
+        validatePostImageFile(postImageFile);
         this.postImageFile = postImageFile;
     }
 
-    private void validatePostImageFile() {
+    private void validatePostImageFile(MultipartFile postImageFile) {
         if (postImageFile == null || postImageFile.isEmpty()) {
             throw new ImageFileNotExistsException();
         }
