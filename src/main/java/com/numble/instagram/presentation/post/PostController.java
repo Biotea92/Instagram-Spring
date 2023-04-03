@@ -2,6 +2,7 @@ package com.numble.instagram.presentation.post;
 
 import com.numble.instagram.application.usecase.post.CreateCommentUsecase;
 import com.numble.instagram.application.usecase.post.CreatePostUsecase;
+import com.numble.instagram.application.usecase.post.EditCommentUsecase;
 import com.numble.instagram.application.usecase.post.EditPostUsecase;
 import com.numble.instagram.dto.request.post.CommentRequest;
 import com.numble.instagram.dto.request.post.PostCreateRequest;
@@ -22,6 +23,7 @@ public class PostController {
     private final CreatePostUsecase createPostUsecase;
     private final EditPostUsecase editPostUsecase;
     private final CreateCommentUsecase createCommentUsecase;
+    private final EditCommentUsecase editCommentUsecase;
 
     @Login
     @PostMapping
@@ -51,6 +53,6 @@ public class PostController {
     public CommentResponse commentEdit(@AuthenticatedUser Long userId,
                                        @PathVariable Long commentId,
                                        @Validated @RequestBody CommentRequest commentRequest) {
-        return null;
+        return editCommentUsecase.execute(userId, commentId, commentRequest);
     }
 }

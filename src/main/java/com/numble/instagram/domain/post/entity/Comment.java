@@ -45,4 +45,12 @@ public class Comment {
         this.post = post;
         this.commentWriteUser = commentWriteUser;
     }
+
+    public boolean isCommentWriteUser(User user) {
+        return this.commentWriteUser == user;
+    }
+
+    public void updateContent(String content) {
+        this.content = this.content.equals(content) ? this.content : content;
+    }
 }
