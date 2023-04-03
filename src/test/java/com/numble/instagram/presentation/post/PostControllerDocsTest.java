@@ -2,7 +2,9 @@ package com.numble.instagram.presentation.post;
 
 import com.numble.instagram.application.auth.token.TokenProvider;
 import com.numble.instagram.application.usecase.post.CreatePostUsecase;
+import com.numble.instagram.application.usecase.post.EditPostUsecase;
 import com.numble.instagram.dto.request.post.PostCreateRequest;
+import com.numble.instagram.dto.request.post.PostEditRequest;
 import com.numble.instagram.dto.response.post.PostResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +34,7 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -43,6 +46,8 @@ class PostControllerDocsTest {
     private TokenProvider tokenProvider;
     @MockBean
     private CreatePostUsecase createPostUsecase;
+    @MockBean
+    private EditPostUsecase editPostUsecase;
     @Autowired
     private WebApplicationContext webApplicationContext;
     private static final String DOCUMENT_IDENTIFIER = "post/{method-name}/";
@@ -80,6 +85,50 @@ class PostControllerDocsTest {
                 .andDo(document(DOCUMENT_IDENTIFIER,
                         requestParts(
                                 partWithName("postImageFile").description("파일 업로드")
+                        ),
+//                        formParameters(
+//                                parameterWithName("content").description("글 내용")
+//                        ),
+                        responseFields(
+                                fieldWithPath("id").description("post id"),
+                                fieldWithPath("postImageUrl").description("글 이미지 Url"),
+                                fieldWithPath("content").description("내용"),
+                                fieldWithPath("likeCount").description("좋아요 수"),
+                                fieldWithPath("createdAt").description("글 쓴 날짜")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("글은 수정 되어야한다.")
+    void edit() throws Exception {
+        String authorizationHeader = "Bearer access-token";
+        Long userId = 1L;
+        Long postId = 1L;
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
+
+        String content = "새로운 내용입니다.";
+        postImageFile = new MockMultipartFile("postImageFile", "image".getBytes());
+        PostEditRequest postEditRequest = new PostEditRequest(content, postImageFile);
+        PostResponse postResponse = new PostResponse(
+                1L, "https://new-image.jpg", content, 0L, LocalDateTime.now());
+        given(editPostUsecase.execute(eq(userId), eq(postId), eq(postEditRequest))).willReturn(postResponse);
+
+        mockMvc.perform(multipart("/api/post/{postId}/edit", postId)
+                        .file(postImageFile)
+                        .param("content", content)
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(postId))
+                .andExpect(jsonPath("$.content").value(content))
+                .andExpect(jsonPath("$.postImageUrl").value("https://new-image.jpg"))
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        requestParts(
+                                partWithName("postImageFile").description("파일 업로드")
+                        ),
+                        pathParameters(
+                                parameterWithName("postId").description("글 id")
                         ),
 //                        formParameters(
 //                                parameterWithName("content").description("글 내용")
