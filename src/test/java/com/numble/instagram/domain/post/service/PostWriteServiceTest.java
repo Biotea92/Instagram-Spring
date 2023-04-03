@@ -40,7 +40,7 @@ class PostWriteServiceTest {
 
         Post newPost = postWriteService.register(writerUser, content, postImageUrl);
 
-        assertEquals(writerUser, newPost.getWriterUser());
+        assertEquals(writerUser, newPost.getWriteUser());
         assertEquals(content, newPost.getContent());
         assertEquals(postImageUrl, newPost.getPostImageUrl());
     }

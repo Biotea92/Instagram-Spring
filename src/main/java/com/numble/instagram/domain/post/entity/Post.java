@@ -28,7 +28,7 @@ public class Post {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
-    private User writerUser;
+    private User writeUser;
 
     private Long likeCount;
 
@@ -49,11 +49,11 @@ public class Post {
     public Post(String postImageUrl, String content, User writerUser) {
         this.postImageUrl = postImageUrl;
         this.content = content;
-        this.writerUser = writerUser;
+        this.writeUser = writerUser;
     }
 
     public boolean isWriter(User user) {
-        return writerUser == user;
+        return writeUser == user;
     }
 
     public void updateContent(String content) {

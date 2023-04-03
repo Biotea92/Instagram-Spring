@@ -38,7 +38,7 @@ class PostReadServiceTest {
 
         assertEquals(post.getContent(), result.getContent());
         assertEquals(post.getPostImageUrl(), result.getPostImageUrl());
-        assertEquals(post.getWriterUser(), result.getWriterUser());
+        assertEquals(post.getWriteUser(), result.getWriteUser());
     }
 
     @Test
