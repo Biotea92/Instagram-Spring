@@ -26,7 +26,7 @@ public class FeedWriteService {
         feedRepository.saveAll(feeds);
     }
 
-    public Feed toFeed(Post newPost, User follower) {
+    private Feed toFeed(Post newPost, User follower) {
         return Feed.builder()
                 .user(follower)
                 .post(newPost)
