@@ -2,6 +2,7 @@ package com.numble.instagram.presentation.post;
 
 import com.numble.instagram.application.usecase.post.CreatePostUsecase;
 import com.numble.instagram.dto.request.post.PostCreateRequest;
+import com.numble.instagram.dto.response.post.PostResponse;
 import com.numble.instagram.presentation.auth.AuthenticatedUser;
 import com.numble.instagram.presentation.auth.Login;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +20,8 @@ public class PostController {
 
     @Login
     @PostMapping
-    public String register(@AuthenticatedUser Long userId,
-                           @Validated PostCreateRequest postCreateRequest) {
-        createPostUsecase.execute(userId, postCreateRequest);
-
-        return "il";
+    public PostResponse register(@AuthenticatedUser Long userId,
+                                 @Validated PostCreateRequest postCreateRequest) {
+        return createPostUsecase.execute(userId, postCreateRequest);
     }
 }
