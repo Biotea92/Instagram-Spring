@@ -3,6 +3,7 @@ package com.numble.instagram.domain.post.entity;
 import com.numble.instagram.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -13,6 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @NoArgsConstructor(access = PROTECTED)
+@Getter
 public class Feed {
 
     @Id
@@ -27,6 +29,7 @@ public class Feed {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 
     @Builder
