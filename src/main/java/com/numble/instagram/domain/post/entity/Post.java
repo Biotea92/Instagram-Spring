@@ -51,4 +51,18 @@ public class Post {
         this.content = content;
         this.writerUser = writerUser;
     }
+
+    public boolean isWriter(User user) {
+        return writerUser == user;
+    }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
+
+    public String updatePostImageUrl(String postImageUrl) {
+        String willDeleteImageUrl = this.postImageUrl;
+        this.postImageUrl = postImageUrl;
+        return willDeleteImageUrl;
+    }
 }
