@@ -5,7 +5,7 @@ import com.numble.instagram.application.auth.token.TokenProvider;
 import com.numble.instagram.application.usecase.post.CreateCommentUsecase;
 import com.numble.instagram.application.usecase.post.CreatePostUsecase;
 import com.numble.instagram.application.usecase.post.EditPostUsecase;
-import com.numble.instagram.dto.request.post.CommentCreateRequest;
+import com.numble.instagram.dto.request.post.CommentRequest;
 import com.numble.instagram.dto.request.post.PostCreateRequest;
 import com.numble.instagram.dto.request.post.PostEditRequest;
 import com.numble.instagram.dto.response.post.CommentResponse;
@@ -161,12 +161,12 @@ class PostControllerDocsTest {
         given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
         given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
 
-        CommentCreateRequest commentCreateRequest = new CommentCreateRequest("댓글 입니다.");
+        CommentRequest commentRequest = new CommentRequest("댓글 입니다.");
         CommentResponse commentResponse =
-                new CommentResponse(1L, commentCreateRequest.content(), LocalDateTime.now());
-        given(createCommentUsecase.execute(userId, postId, commentCreateRequest)).willReturn(commentResponse);
+                new CommentResponse(1L, commentRequest.content(), LocalDateTime.now());
+        given(createCommentUsecase.execute(userId, postId, commentRequest)).willReturn(commentResponse);
 
-        String json = objectMapper.writeValueAsString(commentCreateRequest);
+        String json = objectMapper.writeValueAsString(commentRequest);
 
         mockMvc.perform(post("/api/post/{postId}/comment", postId)
                         .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
