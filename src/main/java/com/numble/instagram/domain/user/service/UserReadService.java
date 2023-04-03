@@ -19,7 +19,7 @@ public class UserReadService {
                 .orElseThrow(UserNotFoundException::new);
     }
 
-    public User getUserByNickname(String nickname) {
+    public User getUser(String nickname) {
         return userRepository.findByNickname(nickname)
                 .orElseThrow(UserNotFoundException::new);
     }

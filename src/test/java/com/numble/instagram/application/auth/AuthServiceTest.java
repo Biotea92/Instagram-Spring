@@ -53,7 +53,7 @@ class AuthServiceTest {
         RefreshToken refreshToken = RefreshTokenFixture.create(refreshTokenValue, userId, LocalDateTime.now().plusDays(7));
         User user = UserFixture.create(userId, nickname, password);
 
-        when(userReadService.getUserByNickname(nickname)).thenReturn(user);
+        when(userReadService.getUser(nickname)).thenReturn(user);
         when(passwordEncoder.matches(password, user.getPassword())).thenReturn(true);
         when(tokenProvider.createAccessToken(userId)).thenReturn(accessToken);
         when(refreshTokenProvider.createToken(userId)).thenReturn(refreshToken);
@@ -73,7 +73,7 @@ class AuthServiceTest {
         String password = "password123";
         long userId = 1L;
         User user = UserFixture.create(userId, nickname, password);
-        when(userReadService.getUserByNickname(nickname)).thenReturn(user);
+        when(userReadService.getUser(nickname)).thenReturn(user);
         when(passwordEncoder.matches(password, user.getPassword())).thenReturn(false);
 
         assertThrows(PasswordMismatchException.class, () -> authService.login(nickname, password));
