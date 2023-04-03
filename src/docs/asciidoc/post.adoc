@@ -1,0 +1,21 @@
+== *Post*
+
+'''
+
+=== 글 생성
+==== Request
+include::{snippets}/post/register/http-request.adoc[]
+- param
+
+현재 rest-docs 3.0 버전에서 requestParameters를 지원하지 않고 formParameters, queryParameters로 나뉘면서
+multipart 요청시 form-data가 정상적으로 작동하지 않는 현상 때문에 multipart 요청시 parameter를 docs로 만들지 못하고 있습니다.
+
+글 생성 시 필요한 form-data는 content(String) 글 내용 입니다. 감사합니다.
+
+- part
+include::{snippets}/post/register/request-parts.adoc[]
+
+==== Response
+include::{snippets}/post/register/http-response.adoc[]
+- body
+include::{snippets}/post/register/response-fields.adoc[]
