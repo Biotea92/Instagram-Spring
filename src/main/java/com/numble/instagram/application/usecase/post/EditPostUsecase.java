@@ -1,6 +1,6 @@
 package com.numble.instagram.application.usecase.post;
 
-import com.numble.instagram.domain.post.dto.PostDto;
+import com.numble.instagram.dto.common.PostDto;
 import com.numble.instagram.domain.post.service.PostWriteService;
 import com.numble.instagram.domain.user.entity.User;
 import com.numble.instagram.domain.user.service.UserReadService;

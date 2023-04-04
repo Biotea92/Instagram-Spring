@@ -1,4 +1,4 @@
-package com.numble.instagram.domain.post.dto;
+package com.numble.instagram.dto.common;
 
 import com.numble.instagram.domain.post.entity.Post;
 

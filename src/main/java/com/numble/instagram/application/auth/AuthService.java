@@ -27,7 +27,7 @@ public class AuthService {
 
     @Transactional
     public LoginDto login(String nickname, String password) {
-        User loginUser = userReadService.getUserByNickname(nickname);
+        User loginUser = userReadService.getUser(nickname);
         if (!passwordEncoder.matches(password, loginUser.getPassword())) {
             throw new PasswordMismatchException();
         }

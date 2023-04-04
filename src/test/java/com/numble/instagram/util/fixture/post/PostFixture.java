@@ -42,4 +42,16 @@ public class PostFixture {
 
         return new EasyRandom(param).nextObject(Post.class);
     }
+
+    public static Post create(String content) {
+        var contentPredicate = named("content")
+                .and(ofType(String.class))
+                .and(inClass(Post.class));
+
+        var param = new EasyRandomParameters()
+                .randomize(contentPredicate, () -> content)
+                .dateRange(LocalDate.now(), LocalDate.now());
+
+        return new EasyRandom(param).nextObject(Post.class);
+    }
 }
