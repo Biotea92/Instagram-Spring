@@ -6,7 +6,7 @@ import com.numble.instagram.domain.post.service.CommentWriteService;
 import com.numble.instagram.domain.post.service.PostReadService;
 import com.numble.instagram.domain.user.entity.User;
 import com.numble.instagram.domain.user.service.UserReadService;
-import com.numble.instagram.dto.request.post.CommentCreateRequest;
+import com.numble.instagram.dto.request.post.CommentRequest;
 import com.numble.instagram.dto.response.post.CommentResponse;
 import com.numble.instagram.util.fixture.post.CommentFixture;
 import com.numble.instagram.util.fixture.post.PostFixture;
@@ -39,7 +39,7 @@ class CreateCommentUsecaseTest {
     void createCommentExecute() {
         Long userId = 1L;
         Long postId = 2L;
-        CommentCreateRequest request = new CommentCreateRequest("test comment");
+        CommentRequest request = new CommentRequest("test comment");
         User user = UserFixture.create(userId, "user");
         Post post = PostFixture.create("post-content");
         Comment comment = CommentFixture.create(user, post, "test comment");

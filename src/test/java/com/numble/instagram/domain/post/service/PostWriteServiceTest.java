@@ -1,9 +1,9 @@
 package com.numble.instagram.domain.post.service;
 
-import com.numble.instagram.dto.common.PostDto;
 import com.numble.instagram.domain.post.entity.Post;
 import com.numble.instagram.domain.post.repository.PostRepository;
 import com.numble.instagram.domain.user.entity.User;
+import com.numble.instagram.dto.common.PostDto;
 import com.numble.instagram.exception.badrequest.NotPostWriterException;
 import com.numble.instagram.exception.notfound.PostNotFoundException;
 import com.numble.instagram.util.fixture.post.PostFixture;
@@ -36,11 +36,13 @@ class PostWriteServiceTest {
         User writerUser = UserFixture.create("writerUser");
         String content = "post content";
         String postImageUrl = "http://example.com/image.jpg";
-        when(postRepository.save(any(Post.class))).thenReturn(PostFixture.create(postImageUrl, content, writerUser));
+        Post post = PostFixture.create(postImageUrl, content, writerUser);
+        System.out.println("post.getWriteUser().getNickname() = " + post.getWriteUser().getNickname());
+        when(postRepository.save(any(Post.class))).thenReturn(post);
 
         Post newPost = postWriteService.register(writerUser, content, postImageUrl);
 
-        assertEquals(writerUser, newPost.getWriterUser());
+        assertEquals(writerUser, newPost.getWriteUser());
         assertEquals(content, newPost.getContent());
         assertEquals(postImageUrl, newPost.getPostImageUrl());
     }

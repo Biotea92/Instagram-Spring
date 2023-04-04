@@ -2,8 +2,9 @@ package com.numble.instagram.presentation.post;
 
 import com.numble.instagram.application.usecase.post.CreateCommentUsecase;
 import com.numble.instagram.application.usecase.post.CreatePostUsecase;
+import com.numble.instagram.application.usecase.post.EditCommentUsecase;
 import com.numble.instagram.application.usecase.post.EditPostUsecase;
-import com.numble.instagram.dto.request.post.CommentCreateRequest;
+import com.numble.instagram.dto.request.post.CommentRequest;
 import com.numble.instagram.dto.request.post.PostCreateRequest;
 import com.numble.instagram.dto.request.post.PostEditRequest;
 import com.numble.instagram.dto.response.post.CommentResponse;
@@ -22,6 +23,7 @@ public class PostController {
     private final CreatePostUsecase createPostUsecase;
     private final EditPostUsecase editPostUsecase;
     private final CreateCommentUsecase createCommentUsecase;
+    private final EditCommentUsecase editCommentUsecase;
 
     @Login
     @PostMapping
@@ -42,7 +44,15 @@ public class PostController {
     @PostMapping("/{postId}/comment")
     public CommentResponse commentRegister(@AuthenticatedUser Long userId,
                                            @PathVariable Long postId,
-                                           @Validated @RequestBody CommentCreateRequest commentCreateRequest) {
-        return createCommentUsecase.execute(userId, postId, commentCreateRequest);
+                                           @Validated @RequestBody CommentRequest commentRequest) {
+        return createCommentUsecase.execute(userId, postId, commentRequest);
+    }
+
+    @Login
+    @PutMapping("/comment/{commentId}")
+    public CommentResponse commentEdit(@AuthenticatedUser Long userId,
+                                       @PathVariable Long commentId,
+                                       @Validated @RequestBody CommentRequest commentRequest) {
+        return editCommentUsecase.execute(userId, commentId, commentRequest);
     }
 }

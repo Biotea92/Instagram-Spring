@@ -59,3 +59,18 @@ include::{snippets}/post/register-comment/response-fields.adoc[]
 include::{snippets}/post/register-comment/http-response.adoc[]
 - body
 include::{snippets}/post/register-comment/response-fields.adoc[]
+
+'''
+
+=== 댓글 수정
+==== Request
+include::{snippets}/post/comment-edit/http-request.adoc[]
+- path parameter
+
+include::{snippets}/post/comment-edit/path-parameters.adoc[]
+- body
+include::{snippets}/post/comment-edit/response-fields.adoc[]
+==== Response
+include::{snippets}/post/comment-edit/http-response.adoc[]
+- body
+include::{snippets}/post/comment-edit/response-fields.adoc[]
