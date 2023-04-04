@@ -2,7 +2,6 @@ package com.numble.instagram.domain.follow.service;
 
 import com.numble.instagram.domain.follow.entity.Follow;
 import com.numble.instagram.domain.follow.repository.FollowRepository;
-import com.numble.instagram.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,11 +23,11 @@ public class FollowReadService {
         return followRepository.getFollowingCount(userId);
     }
 
-    public List<Follow> getFollowersFollow(User toUser) {
-        return followRepository.findByToUser(toUser);
+    public List<Follow> getFollowersFollow(Long toUserId) {
+        return followRepository.findByToUserIdWithFromUser(toUserId);
     }
 
-    public List<Follow> getFollowingsFollow(User fromUser) {
-        return followRepository.findByFromUser(fromUser);
+    public List<Follow> getFollowingsFollow(Long fromUserId) {
+        return followRepository.findByFromUserIdWithToUser(fromUserId);
     }
 }

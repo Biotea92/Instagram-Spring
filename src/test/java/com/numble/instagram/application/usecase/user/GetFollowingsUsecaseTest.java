@@ -37,11 +37,11 @@ class GetFollowingsUsecaseTest {
         User user = UserFixture.create("user1");
         User following1 = UserFixture.create("following1");
         User following2 = UserFixture.create("following2");
-        Follow followingFollow1 = FollowFixture.create(following1, user);
-        Follow followingFollow2 = FollowFixture.create(following2, user);
+        Follow followingFollow1 = FollowFixture.create(user, following1);
+        Follow followingFollow2 = FollowFixture.create(user, following2);
         List<Follow> followList = List.of(followingFollow1, followingFollow2);
         when(userReadService.getUser(user.getId())).thenReturn(user);
-        when(followReadService.getFollowingsFollow(user)).thenReturn(followList);
+        when(followReadService.getFollowingsFollow(user.getId())).thenReturn(followList);
 
         List<UserResponse> result = getFollowingsUsecase.execute(user.getId());
 

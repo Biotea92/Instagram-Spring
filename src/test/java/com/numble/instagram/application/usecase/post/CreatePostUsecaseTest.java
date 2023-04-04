@@ -63,14 +63,14 @@ class CreatePostUsecaseTest {
         when(userReadService.getUser(userId)).thenReturn(writerUser);
         when(fileStore.uploadImage(postCreateRequest.postImageFile())).thenReturn(postImageUrl);
         when(postWriteService.register(writerUser, postCreateRequest.content(), postImageUrl)).thenReturn(newPost);
-        when(followReadService.getFollowersFollow(writerUser)).thenReturn(
+        when(followReadService.getFollowersFollow(writerUser.getId())).thenReturn(
                 List.of(Follow.create(follower1, writerUser), Follow.create(follower2, writerUser))
         );
 
         PostResponse postResponse = createPostUsecase.execute(userId, postCreateRequest);
 
         verify(postWriteService).register(writerUser, postCreateRequest.content(), postImageUrl);
-        verify(followReadService).getFollowersFollow(writerUser);
+        verify(followReadService).getFollowersFollow(writerUser.getId());
         verify(feedWriteService).deliveryToFeed(newPost, followers);
         verifyNoMoreInteractions(postWriteService, followReadService, feedWriteService);
 
