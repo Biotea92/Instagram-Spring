@@ -24,6 +24,7 @@ public class Post {
 
     private String postImageUrl;
 
+    @Lob
     private String content;
 
     @ManyToOne(fetch = LAZY)
@@ -46,14 +47,14 @@ public class Post {
     }
 
     @Builder
-    public Post(String postImageUrl, String content, User writerUser) {
+    public Post(String postImageUrl, String content, User writeUser) {
         this.postImageUrl = postImageUrl;
         this.content = content;
-        this.writeUser = writerUser;
+        this.writeUser = writeUser;
     }
 
     public boolean isWriter(User user) {
-        return writeUser == user;
+        return this.writeUser == user;
     }
 
     public void updateContent(String content) {

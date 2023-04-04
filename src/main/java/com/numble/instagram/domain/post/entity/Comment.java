@@ -21,6 +21,7 @@ public class Comment {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Lob
     private String content;
 
     @ManyToOne(fetch = LAZY)
