@@ -24,6 +24,7 @@ public class PostController {
     private final CreateCommentUsecase createCommentUsecase;
     private final EditCommentUsecase editCommentUsecase;
     private final CreateReplyUsecase createReplyUsecase;
+    private final EditReplyUsecase editReplyUsecase;
 
     @Login
     @PostMapping
@@ -62,5 +63,13 @@ public class PostController {
                                        @PathVariable Long commentId,
                                        @Validated @RequestBody ReplyRequest replyRequest) {
         return createReplyUsecase.execute(userId, commentId, replyRequest);
+    }
+
+    @Login
+    @PutMapping("/comment/reply/{replyId}")
+    public ReplyResponse replyEdit(@AuthenticatedUser Long userId,
+                                       @PathVariable Long replyId,
+                                       @Validated @RequestBody ReplyRequest replyRequest) {
+        return editReplyUsecase.execute(userId, replyId, replyRequest);
     }
 }

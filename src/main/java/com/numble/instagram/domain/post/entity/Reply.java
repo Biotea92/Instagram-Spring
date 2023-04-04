@@ -46,4 +46,12 @@ public class Reply {
         this.comment = comment;
         this.replyWriteUser = replyWriteUser;
     }
+
+    public boolean isReplyWriteUser(User user) {
+        return this.replyWriteUser == user;
+    }
+
+    public void updateContent(String content) {
+        this.content = this.content.equals(content) ? this.content : content;
+    }
 }
