@@ -15,27 +15,34 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @NoArgsConstructor(access = PROTECTED)
 @Getter
-public class Feed {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String content;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")
+    private User commentWriteUser;
+
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @PrePersist
+    private void onPrePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
+
     @Builder
-    public Feed(User user, Post post, LocalDateTime createdAt) {
-        this.user = user;
+    public Comment(String content, Post post, User commentWriteUser) {
+        this.content = content;
         this.post = post;
-        this.createdAt = createdAt;
+        this.commentWriteUser = commentWriteUser;
     }
 }

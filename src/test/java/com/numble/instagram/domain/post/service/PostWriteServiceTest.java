@@ -1,6 +1,6 @@
 package com.numble.instagram.domain.post.service;
 
-import com.numble.instagram.domain.post.dto.PostDto;
+import com.numble.instagram.dto.common.PostDto;
 import com.numble.instagram.domain.post.entity.Post;
 import com.numble.instagram.domain.post.repository.PostRepository;
 import com.numble.instagram.domain.user.entity.User;

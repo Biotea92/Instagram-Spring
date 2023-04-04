@@ -1,10 +1,14 @@
 package com.numble.instagram.presentation.post;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.numble.instagram.application.auth.token.TokenProvider;
+import com.numble.instagram.application.usecase.post.CreateCommentUsecase;
 import com.numble.instagram.application.usecase.post.CreatePostUsecase;
 import com.numble.instagram.application.usecase.post.EditPostUsecase;
+import com.numble.instagram.dto.request.post.CommentCreateRequest;
 import com.numble.instagram.dto.request.post.PostCreateRequest;
 import com.numble.instagram.dto.request.post.PostEditRequest;
+import com.numble.instagram.dto.response.post.CommentResponse;
 import com.numble.instagram.dto.response.post.PostResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,13 +30,14 @@ import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyHeaders;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,6 +46,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith({RestDocumentationExtension.class, MockitoExtension.class})
 class PostControllerDocsTest {
 
+    @Autowired
+    private ObjectMapper objectMapper;
     private MockMvc mockMvc;
     @MockBean
     private TokenProvider tokenProvider;
@@ -48,6 +55,8 @@ class PostControllerDocsTest {
     private CreatePostUsecase createPostUsecase;
     @MockBean
     private EditPostUsecase editPostUsecase;
+    @MockBean
+    private CreateCommentUsecase createCommentUsecase;
     @Autowired
     private WebApplicationContext webApplicationContext;
     private static final String DOCUMENT_IDENTIFIER = "post/{method-name}/";
@@ -139,6 +148,42 @@ class PostControllerDocsTest {
                                 fieldWithPath("content").description("내용"),
                                 fieldWithPath("likeCount").description("좋아요 수"),
                                 fieldWithPath("createdAt").description("글 쓴 날짜")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("댓글은 등록되어야한다.")
+    void registerComment() throws Exception {
+        String authorizationHeader = "Bearer access-token";
+        Long userId = 1L;
+        Long postId = 1L;
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
+
+        CommentCreateRequest commentCreateRequest = new CommentCreateRequest("댓글 입니다.");
+        CommentResponse commentResponse =
+                new CommentResponse(1L, commentCreateRequest.content(), LocalDateTime.now());
+        given(createCommentUsecase.execute(userId, postId, commentCreateRequest)).willReturn(commentResponse);
+
+        String json = objectMapper.writeValueAsString(commentCreateRequest);
+
+        mockMvc.perform(post("/api/post/{postId}/comment", postId)
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("postId").description("댓글 등록 할 글 id")
+                        ),
+                        requestFields(
+                                fieldWithPath("content").description("댓글 내용")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("comment id"),
+                                fieldWithPath("content").description("댓글 내용"),
+                                fieldWithPath("createdAt").description("댓글 생성시간")
                         )
                 ));
     }
