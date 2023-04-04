@@ -14,7 +14,7 @@ public interface FollowRepository extends JpaRepository<Follow, Long>, FollowRep
     Optional<Follow> findByFromUserAndToUser(User fromUser, User toUser);
 
     @Query("SELECT f FROM Follow f JOIN FETCH f.fromUser WHERE f.toUser.id = :userId")
-    List<Follow> findByToUser(@Param("userId") Long userId);
+    List<Follow> findByToUserIdWithFromUser(@Param("userId") Long userId);
 
     @Query("SELECT f FROM Follow f JOIN FETCH f.toUser WHERE f.fromUser.id = :userId")
     List<Follow> findByFromUserIdWithToUser(@Param("userId") Long userId);
