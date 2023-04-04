@@ -55,6 +55,7 @@ include::{snippets}/post/register-comment/http-request.adoc[]
 include::{snippets}/post/register-comment/path-parameters.adoc[]
 - body
 include::{snippets}/post/register-comment/response-fields.adoc[]
+
 ==== Response
 include::{snippets}/post/register-comment/http-response.adoc[]
 - body
@@ -70,6 +71,7 @@ include::{snippets}/post/comment-edit/http-request.adoc[]
 include::{snippets}/post/comment-edit/path-parameters.adoc[]
 - body
 include::{snippets}/post/comment-edit/response-fields.adoc[]
+
 ==== Response
 include::{snippets}/post/comment-edit/http-response.adoc[]
 - body
@@ -85,7 +87,24 @@ include::{snippets}/post/register-reply/http-request.adoc[]
 include::{snippets}/post/register-reply/path-parameters.adoc[]
 - body
 include::{snippets}/post/register-reply/response-fields.adoc[]
+
 ==== Response
 include::{snippets}/post/register-reply/http-response.adoc[]
 - body
 include::{snippets}/post/register-reply/response-fields.adoc[]
+
+'''
+
+=== 답글 수정
+==== Request
+include::{snippets}/post/edit-reply/http-request.adoc[]
+- path parameter
+
+include::{snippets}/post/edit-reply/path-parameters.adoc[]
+- body
+include::{snippets}/post/edit-reply/response-fields.adoc[]
+
+==== Response
+include::{snippets}/post/edit-reply/http-response.adoc[]
+- body
+include::{snippets}/post/edit-reply/response-fields.adoc[]

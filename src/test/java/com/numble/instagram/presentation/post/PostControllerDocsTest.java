@@ -60,6 +60,8 @@ class PostControllerDocsTest {
     private EditCommentUsecase editCommentUsecase;
     @MockBean
     private CreateReplyUsecase createReplyUsecase;
+    @MockBean
+    private EditReplyUsecase editReplyUsecase;
     @Autowired
     private WebApplicationContext webApplicationContext;
     private static final String DOCUMENT_IDENTIFIER = "post/{method-name}/";
@@ -254,6 +256,42 @@ class PostControllerDocsTest {
                         ),
                         requestFields(
                                 fieldWithPath("content").description("답글 내용")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("reply id"),
+                                fieldWithPath("content").description("답글 내용"),
+                                fieldWithPath("createdAt").description("답글 생성시간")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("답글은 수정되어야한다.")
+    void editReply() throws Exception {
+        String authorizationHeader = "Bearer access-token";
+        Long userId = 1L;
+        Long replyId = 1L;
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
+
+        ReplyRequest replyRequest = new ReplyRequest("수정 답글 입니다.");
+        ReplyResponse replyResponse = new ReplyResponse(1L, replyRequest.content(), LocalDateTime.now());
+
+        given(editReplyUsecase.execute(userId, replyId, replyRequest)).willReturn(replyResponse);
+
+        String json = objectMapper.writeValueAsString(replyRequest);
+
+        mockMvc.perform(put("/api/post/comment/reply/{replyId}", replyId)
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("replyId").description("수정 할 답글 id")
+                        ),
+                        requestFields(
+                                fieldWithPath("content").description("수정 할 답글 내용")
                         ),
                         responseFields(
                                 fieldWithPath("id").description("reply id"),
