@@ -33,4 +33,16 @@ public class CommentFixture {
 
         return new EasyRandom(param).nextObject(Comment.class);
     }
+
+    public static Comment create(String content) {
+        var contentPredicate = named("content")
+                .and(ofType(String.class))
+                .and(inClass(Comment.class));
+
+        var param = new EasyRandomParameters()
+                .randomize(contentPredicate, () -> content)
+                .dateRange(LocalDate.now(), LocalDate.now());
+
+        return new EasyRandom(param).nextObject(Comment.class);
+    }
 }

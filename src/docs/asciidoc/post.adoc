@@ -74,3 +74,18 @@ include::{snippets}/post/comment-edit/response-fields.adoc[]
 include::{snippets}/post/comment-edit/http-response.adoc[]
 - body
 include::{snippets}/post/comment-edit/response-fields.adoc[]
+
+'''
+
+=== 답글 등록
+==== Request
+include::{snippets}/post/register-reply/http-request.adoc[]
+- path parameter
+
+include::{snippets}/post/register-reply/path-parameters.adoc[]
+- body
+include::{snippets}/post/register-reply/response-fields.adoc[]
+==== Response
+include::{snippets}/post/register-reply/http-response.adoc[]
+- body
+include::{snippets}/post/register-reply/response-fields.adoc[]

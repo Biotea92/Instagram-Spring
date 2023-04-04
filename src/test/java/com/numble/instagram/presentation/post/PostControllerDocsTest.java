@@ -2,15 +2,14 @@ package com.numble.instagram.presentation.post;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.numble.instagram.application.auth.token.TokenProvider;
-import com.numble.instagram.application.usecase.post.CreateCommentUsecase;
-import com.numble.instagram.application.usecase.post.CreatePostUsecase;
-import com.numble.instagram.application.usecase.post.EditCommentUsecase;
-import com.numble.instagram.application.usecase.post.EditPostUsecase;
+import com.numble.instagram.application.usecase.post.*;
 import com.numble.instagram.dto.request.post.CommentRequest;
 import com.numble.instagram.dto.request.post.PostCreateRequest;
 import com.numble.instagram.dto.request.post.PostEditRequest;
+import com.numble.instagram.dto.request.post.ReplyRequest;
 import com.numble.instagram.dto.response.post.CommentResponse;
 import com.numble.instagram.dto.response.post.PostResponse;
+import com.numble.instagram.dto.response.post.ReplyResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,6 +58,8 @@ class PostControllerDocsTest {
     private CreateCommentUsecase createCommentUsecase;
     @MockBean
     private EditCommentUsecase editCommentUsecase;
+    @MockBean
+    private CreateReplyUsecase createReplyUsecase;
     @Autowired
     private WebApplicationContext webApplicationContext;
     private static final String DOCUMENT_IDENTIFIER = "post/{method-name}/";
@@ -222,6 +223,42 @@ class PostControllerDocsTest {
                                 fieldWithPath("id").description("comment id"),
                                 fieldWithPath("content").description("댓글 내용"),
                                 fieldWithPath("createdAt").description("댓글 생성시간")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("답글은 등록되어야한다.")
+    void registerReply() throws Exception {
+        String authorizationHeader = "Bearer access-token";
+        Long userId = 1L;
+        Long commentId = 1L;
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
+
+        ReplyRequest replyRequest = new ReplyRequest("답글 입니다.");
+        ReplyResponse replyResponse = new ReplyResponse(1L, replyRequest.content(), LocalDateTime.now());
+
+        given(createReplyUsecase.execute(userId, commentId, replyRequest)).willReturn(replyResponse);
+
+        String json = objectMapper.writeValueAsString(replyRequest);
+
+        mockMvc.perform(post("/api/post/comment/{commentId}/reply", commentId)
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("commentId").description("답글 등록 할 댓글 id")
+                        ),
+                        requestFields(
+                                fieldWithPath("content").description("답글 내용")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("reply id"),
+                                fieldWithPath("content").description("답글 내용"),
+                                fieldWithPath("createdAt").description("답글 생성시간")
                         )
                 ));
     }
