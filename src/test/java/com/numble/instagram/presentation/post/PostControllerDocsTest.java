@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.numble.instagram.application.auth.token.TokenProvider;
 import com.numble.instagram.application.usecase.post.CreateCommentUsecase;
 import com.numble.instagram.application.usecase.post.CreatePostUsecase;
+import com.numble.instagram.application.usecase.post.EditCommentUsecase;
 import com.numble.instagram.application.usecase.post.EditPostUsecase;
 import com.numble.instagram.dto.request.post.CommentRequest;
 import com.numble.instagram.dto.request.post.PostCreateRequest;
@@ -33,8 +34,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.modifyHeaders;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -57,6 +57,8 @@ class PostControllerDocsTest {
     private EditPostUsecase editPostUsecase;
     @MockBean
     private CreateCommentUsecase createCommentUsecase;
+    @MockBean
+    private EditCommentUsecase editCommentUsecase;
     @Autowired
     private WebApplicationContext webApplicationContext;
     private static final String DOCUMENT_IDENTIFIER = "post/{method-name}/";
@@ -179,6 +181,42 @@ class PostControllerDocsTest {
                         ),
                         requestFields(
                                 fieldWithPath("content").description("댓글 내용")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("comment id"),
+                                fieldWithPath("content").description("댓글 내용"),
+                                fieldWithPath("createdAt").description("댓글 생성시간")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("댓글은 수정되어야한다.")
+    void commentEdit() throws Exception {
+        String authorizationHeader = "Bearer access-token";
+        Long userId = 1L;
+        Long commentId = 1L;
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
+
+        CommentRequest commentRequest = new CommentRequest("수정 댓글 입니다.");
+        CommentResponse commentResponse =
+                new CommentResponse(1L, commentRequest.content(), LocalDateTime.now());
+        given(editCommentUsecase.execute(userId, commentId, commentRequest)).willReturn(commentResponse);
+
+        String json = objectMapper.writeValueAsString(commentRequest);
+
+        mockMvc.perform(put("/api/post/comment/{commentId}", commentId)
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader)
+                        .contentType(APPLICATION_JSON)
+                        .content(json))
+                .andExpect(status().isOk())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("commentId").description("댓글 수정 할 댓글 id")
+                        ),
+                        requestFields(
+                                fieldWithPath("content").description("수정 할 댓글 내용")
                         ),
                         responseFields(
                                 fieldWithPath("id").description("comment id"),
