@@ -28,6 +28,6 @@ public class FollowReadService {
     }
 
     public List<Follow> getFollowingsFollow(Long fromUserId) {
-        return followRepository.findByFromUser(fromUserId);
+        return followRepository.findByFromUserIdWithToUser(fromUserId);
     }
 }
