@@ -46,7 +46,7 @@ public class Comment {
         this.post = post;
         this.commentWriteUser = commentWriteUser;
     }
-
+    
     public boolean isCommentWriteUser(User user) {
         return this.commentWriteUser == user;
     }
