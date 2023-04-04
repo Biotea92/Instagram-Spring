@@ -24,11 +24,12 @@ public class Post {
 
     private String postImageUrl;
 
+    @Lob
     private String content;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
-    private User writerUser;
+    private User writeUser;
 
     private Long likeCount;
 
@@ -46,14 +47,14 @@ public class Post {
     }
 
     @Builder
-    public Post(String postImageUrl, String content, User writerUser) {
+    public Post(String postImageUrl, String content, User writeUser) {
         this.postImageUrl = postImageUrl;
         this.content = content;
-        this.writerUser = writerUser;
+        this.writeUser = writeUser;
     }
 
     public boolean isWriter(User user) {
-        return writerUser == user;
+        return this.writeUser == user;
     }
 
     public void updateContent(String content) {

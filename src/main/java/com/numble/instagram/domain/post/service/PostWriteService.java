@@ -17,9 +17,9 @@ public class PostWriteService {
 
     private final PostRepository postRepository;
 
-    public Post register(User writerUser, String content, String postImageUrl) {
+    public Post register(User writeUser, String content, String postImageUrl) {
         Post newPost = Post.builder()
-                .writerUser(writerUser)
+                .writeUser(writeUser)
                 .content(content)
                 .postImageUrl(postImageUrl)
                 .build();

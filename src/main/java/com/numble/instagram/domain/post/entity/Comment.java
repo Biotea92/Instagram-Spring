@@ -21,6 +21,7 @@ public class Comment {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Lob
     private String content;
 
     @ManyToOne(fetch = LAZY)
@@ -44,5 +45,13 @@ public class Comment {
         this.content = content;
         this.post = post;
         this.commentWriteUser = commentWriteUser;
+    }
+    
+    public boolean isCommentWriteUser(User user) {
+        return this.commentWriteUser == user;
+    }
+
+    public void updateContent(String content) {
+        this.content = this.content.equals(content) ? this.content : content;
     }
 }

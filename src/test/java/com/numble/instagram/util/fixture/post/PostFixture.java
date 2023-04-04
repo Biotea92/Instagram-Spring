@@ -11,7 +11,7 @@ import static org.jeasy.random.FieldPredicates.*;
 
 public class PostFixture {
 
-    public static Post create(String postImageUrl, String content, User writerUser) {
+    public static Post create(String postImageUrl, String content, User writeUser) {
         var idPredicate = named("id")
                 .and(ofType(Long.class))
                 .and(inClass(Post.class));
@@ -24,7 +24,7 @@ public class PostFixture {
                 .and(ofType(String.class))
                 .and(inClass(Post.class));
 
-        var writerUserPredicate = named("writerUser")
+        var writerUserPredicate = named("writeUser")
                 .and(ofType(User.class))
                 .and(inClass(Post.class));
 
@@ -35,7 +35,7 @@ public class PostFixture {
         var param = new EasyRandomParameters()
                 .randomize(postImageUrlPredicate, () -> postImageUrl)
                 .randomize(contentPredicate, () -> content)
-                .randomize(writerUserPredicate, () -> writerUser)
+                .randomize(writerUserPredicate, () -> writeUser)
                 .randomize(likeCountPredicate, () -> 0L)
                 .dateRange(LocalDate.now(), LocalDate.now())
                 .excludeField(idPredicate);
