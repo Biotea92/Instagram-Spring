@@ -51,6 +51,23 @@ public class UserFixture {
     }
 
     public static User create(String nickname) {
-        return new User(nickname, "1234", "https://");
+        var nicknamePredicate = named("nickname")
+                .and(ofType(String.class))
+                .and(inClass(User.class));
+
+        var passwordPredicate = named("password")
+                .and(ofType(String.class))
+                .and(inClass(User.class));
+
+        var profileImageUrlPredicate = named("profileImageUrl")
+                .and(ofType(String.class))
+                .and(inClass(User.class));
+
+        var param = new EasyRandomParameters()
+                .randomize(nicknamePredicate, () -> nickname)
+                .randomize(profileImageUrlPredicate, () -> "https://")
+                .randomize(passwordPredicate, () -> "1234");
+
+        return new EasyRandom(param).nextObject(User.class);
     }
 }
