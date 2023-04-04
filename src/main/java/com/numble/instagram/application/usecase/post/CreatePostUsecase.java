@@ -30,7 +30,7 @@ public class CreatePostUsecase {
         String postImageUrl = fileStore.uploadImage(postCreateRequest.postImageFile());
 
         Post newPost = postWriteService.register(writerUser, postCreateRequest.content(), postImageUrl);
-        List<User> followers = followReadService.getFollowersFollow(writerUser).stream()
+        List<User> followers = followReadService.getFollowersFollow(writerUser.getId()).stream()
                 .map(Follow::getFromUser)
                 .toList();
 
