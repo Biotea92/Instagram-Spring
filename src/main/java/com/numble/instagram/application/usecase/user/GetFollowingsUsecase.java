@@ -20,8 +20,8 @@ public class GetFollowingsUsecase {
 
     public List<UserResponse> execute(Long userId) {
         User user = userReadService.getUser(userId);
-        return followReadService.getFollowingsFollow(user).stream()
-                .map(Follow::getFromUser)
+        return followReadService.getFollowingsFollow(user.getId()).stream()
+                .map(Follow::getToUser)
                 .map(UserResponse::from)
                 .sorted(Comparator.comparing(UserResponse::nickname))
                 .toList();

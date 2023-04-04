@@ -81,7 +81,7 @@ class FollowReadServiceTest {
         });
         followRepository.saveAllAndFlush(followers);
 
-        List<Follow> followersFollow = followReadService.getFollowersFollow(user);
+        List<Follow> followersFollow = followReadService.getFollowersFollow(user.getId());
 
         assertEquals(19, followersFollow.size());
     }
@@ -100,7 +100,7 @@ class FollowReadServiceTest {
         });
         followRepository.saveAllAndFlush(followings);
 
-        List<Follow> followingsFollow = followReadService.getFollowingsFollow(user);
+        List<Follow> followingsFollow = followReadService.getFollowingsFollow(user.getId());
 
         assertEquals(19, followingsFollow.size());
     }
