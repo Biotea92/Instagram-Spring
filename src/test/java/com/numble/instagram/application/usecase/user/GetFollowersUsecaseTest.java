@@ -37,8 +37,8 @@ class GetFollowersUsecaseTest {
         User user = UserFixture.create("user1");
         User follower1 = UserFixture.create("follower1");
         User follower2 = UserFixture.create("follower2");
-        Follow follow1 = FollowFixture.create(user, follower1);
-        Follow follow2 = FollowFixture.create(user, follower2);
+        Follow follow1 = FollowFixture.create(follower1, user);
+        Follow follow2 = FollowFixture.create(follower2, user);
         List<Follow> followList = List.of(follow1, follow2);
         when(userReadService.getUser(user.getId())).thenReturn(user);
         when(followReadService.getFollowersFollow(user)).thenReturn(followList);
