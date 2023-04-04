@@ -1,14 +1,13 @@
 package com.numble.instagram.presentation.post;
 
-import com.numble.instagram.application.usecase.post.CreateCommentUsecase;
-import com.numble.instagram.application.usecase.post.CreatePostUsecase;
-import com.numble.instagram.application.usecase.post.EditCommentUsecase;
-import com.numble.instagram.application.usecase.post.EditPostUsecase;
+import com.numble.instagram.application.usecase.post.*;
 import com.numble.instagram.dto.request.post.CommentRequest;
 import com.numble.instagram.dto.request.post.PostCreateRequest;
 import com.numble.instagram.dto.request.post.PostEditRequest;
+import com.numble.instagram.dto.request.post.ReplyRequest;
 import com.numble.instagram.dto.response.post.CommentResponse;
 import com.numble.instagram.dto.response.post.PostResponse;
+import com.numble.instagram.dto.response.post.ReplyResponse;
 import com.numble.instagram.presentation.auth.AuthenticatedUser;
 import com.numble.instagram.presentation.auth.Login;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +23,8 @@ public class PostController {
     private final EditPostUsecase editPostUsecase;
     private final CreateCommentUsecase createCommentUsecase;
     private final EditCommentUsecase editCommentUsecase;
+    private final CreateReplyUsecase createReplyUsecase;
+    private final EditReplyUsecase editReplyUsecase;
 
     @Login
     @PostMapping
@@ -54,5 +55,21 @@ public class PostController {
                                        @PathVariable Long commentId,
                                        @Validated @RequestBody CommentRequest commentRequest) {
         return editCommentUsecase.execute(userId, commentId, commentRequest);
+    }
+
+    @Login
+    @PostMapping("/comment/{commentId}/reply")
+    public ReplyResponse replyRegister(@AuthenticatedUser Long userId,
+                                       @PathVariable Long commentId,
+                                       @Validated @RequestBody ReplyRequest replyRequest) {
+        return createReplyUsecase.execute(userId, commentId, replyRequest);
+    }
+
+    @Login
+    @PutMapping("/comment/reply/{replyId}")
+    public ReplyResponse replyEdit(@AuthenticatedUser Long userId,
+                                       @PathVariable Long replyId,
+                                       @Validated @RequestBody ReplyRequest replyRequest) {
+        return editReplyUsecase.execute(userId, replyId, replyRequest);
     }
 }
