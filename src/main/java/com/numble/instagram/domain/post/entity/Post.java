@@ -39,6 +39,9 @@ public class Post {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @Version
+    private Long version;
+
     @PrePersist
     private void onPrePersist() {
         this.likeCount = 0L;
@@ -65,5 +68,9 @@ public class Post {
         String willDeleteImageUrl = this.postImageUrl;
         this.postImageUrl = postImageUrl;
         return willDeleteImageUrl;
+    }
+
+    public void incrementLikeCount() {
+        this.likeCount++;
     }
 }

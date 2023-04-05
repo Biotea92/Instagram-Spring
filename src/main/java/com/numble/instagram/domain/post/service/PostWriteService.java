@@ -38,6 +38,10 @@ public class PostWriteService {
         return PostDto.from(post);
     }
 
+    public void upLike(Post post) {
+        post.incrementLikeCount();
+    }
+
     private static void checkWriter(User user, Post post) {
         if (!post.isWriter(user)) {
             throw new NotPostWriterException();

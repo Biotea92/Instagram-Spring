@@ -2,6 +2,7 @@ package com.numble.instagram.domain.post.entity;
 
 import com.numble.instagram.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -36,4 +37,9 @@ public class PostLike {
         this.likedAt = LocalDateTime.now();
     }
 
+    @Builder
+    public PostLike(User user, Post post) {
+        this.user = user;
+        this.post = post;
+    }
 }
