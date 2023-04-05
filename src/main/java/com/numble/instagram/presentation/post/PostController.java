@@ -27,6 +27,7 @@ public class PostController {
     private final CreateReplyUsecase createReplyUsecase;
     private final EditReplyUsecase editReplyUsecase;
     private final CreatePostLikeUsecase createPostLikeUsecase;
+    private final DestroyPostLikeUsecase destroyPostLikeUsecase;
 
     @Login
     @PostMapping
@@ -80,5 +81,12 @@ public class PostController {
     public PostLikeResponse likePost(@AuthenticatedUser Long userId,
                                      @PathVariable Long postId) {
         return createPostLikeUsecase.execute(userId, postId);
+    }
+
+    @Login
+    @PostMapping("/{postId}/dislike")
+    public PostLikeResponse dislikePost(@AuthenticatedUser Long userId,
+                                        @PathVariable Long postId) {
+        return destroyPostLikeUsecase.execute(userId, postId);
     }
 }

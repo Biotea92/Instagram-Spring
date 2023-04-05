@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CreatePostLikeUsecase {
+public class DestroyPostLikeUsecase {
 
     private final UserReadService userReadService;
     private final PostReadService postReadService;
@@ -23,11 +23,11 @@ public class CreatePostLikeUsecase {
     public PostLikeResponse execute(Long userId, Long postId) {
         User user = userReadService.getUser(userId);
         Post post = postReadService.getPost(postId);
-        postLikeWriteService.like(user, post);
+        postLikeWriteService.dislike(user, post);
 
         // TODO 어떻게 바꿔야할지 고민해 볼 것
         try {
-            postWriteService.upLikeCount(post);
+            postWriteService.downLikeCount(post);
         } catch (OptimisticLockException ex) {
             throw new RuntimeException("낙관적 락 동시성 문제 발생");
         }
