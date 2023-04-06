@@ -102,4 +102,26 @@ class PostWriteServiceTest {
         assertThrows(NotPostWriterException.class,
                 () -> postWriteService.edit(notWriter, post.getId(), "new content", "http://newImage"));
     }
+
+    @Test
+    @DisplayName("좋아요 수 증가")
+    void upLikeCount() {
+        Post post = PostFixture.create("post-content");
+        Long likeCount = post.getLikeCount();
+
+        postWriteService.upLikeCount(post);
+
+        assertEquals(likeCount + 1 , post.getLikeCount());
+    }
+
+    @Test
+    @DisplayName("좋아요 수 감소")
+    void downLikeCount() {
+        Post post = PostFixture.create("post-content");
+        Long likeCount = post.getLikeCount();
+
+        postWriteService.downLikeCount(post);
+
+        assertEquals(likeCount - 1 , post.getLikeCount());
+    }
 }
