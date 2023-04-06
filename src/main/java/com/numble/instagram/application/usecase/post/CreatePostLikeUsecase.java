@@ -7,8 +7,9 @@ import com.numble.instagram.domain.post.service.PostWriteService;
 import com.numble.instagram.domain.user.entity.User;
 import com.numble.instagram.domain.user.service.UserReadService;
 import com.numble.instagram.dto.response.post.PostLikeResponse;
-import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.StaleStateException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,8 +29,8 @@ public class CreatePostLikeUsecase {
         // TODO 어떻게 바꿔야할지 고민해 볼 것
         try {
             postWriteService.upLikeCount(post);
-        } catch (OptimisticLockException ex) {
-            throw new RuntimeException("낙관적 락 동시성 문제 발생");
+        } catch (ObjectOptimisticLockingFailureException | StaleStateException e) {
+            // 뭔가를 해야만 한다.
         }
         return PostLikeResponse.from(postId);
     }

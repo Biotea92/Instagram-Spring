@@ -29,7 +29,7 @@ public class DestroyPostLikeUsecase {
         try {
             postWriteService.downLikeCount(post);
         } catch (OptimisticLockException ex) {
-            throw new RuntimeException("낙관적 락 동시성 문제 발생");
+            // 뭔가를 해야만 한다.
         }
         return PostLikeResponse.from(postId);
     }
