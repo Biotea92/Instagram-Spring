@@ -8,6 +8,7 @@ import com.numble.instagram.dto.request.post.PostCreateRequest;
 import com.numble.instagram.dto.request.post.PostEditRequest;
 import com.numble.instagram.dto.request.post.ReplyRequest;
 import com.numble.instagram.dto.response.post.CommentResponse;
+import com.numble.instagram.dto.response.post.PostLikeResponse;
 import com.numble.instagram.dto.response.post.PostResponse;
 import com.numble.instagram.dto.response.post.ReplyResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,6 +63,10 @@ class PostControllerDocsTest {
     private CreateReplyUsecase createReplyUsecase;
     @MockBean
     private EditReplyUsecase editReplyUsecase;
+    @MockBean
+    private CreatePostLikeUsecase createPostLikeUsecase;
+    @MockBean
+    private DestroyPostLikeUsecase destroyPostLikeUsecase;
     @Autowired
     private WebApplicationContext webApplicationContext;
     private static final String DOCUMENT_IDENTIFIER = "post/{method-name}/";
@@ -297,6 +302,54 @@ class PostControllerDocsTest {
                                 fieldWithPath("id").description("reply id"),
                                 fieldWithPath("content").description("답글 내용"),
                                 fieldWithPath("createdAt").description("답글 생성시간")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("글의 좋아요는 완료되어야 한다.")
+    void likePost() throws Exception {
+        String authorizationHeader = "Bearer access-token";
+        Long userId = 1L;
+        Long postId = 1L;
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
+
+        given(createPostLikeUsecase.execute(userId, postId)).willReturn(new PostLikeResponse(postId));
+
+        mockMvc.perform(post("/api/post/{postId}/like", postId)
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader))
+                .andExpect(status().isOk())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("postId").description("좋아요 할 글 id")
+                        ),
+                        responseFields(
+                                fieldWithPath("postId").description("좋아요 한 post id")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("글의 좋아요 취소는 완료되어야 한다.")
+    void dislikePost() throws Exception {
+        String authorizationHeader = "Bearer access-token";
+        Long userId = 1L;
+        Long postId = 1L;
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
+
+        given(destroyPostLikeUsecase.execute(userId, postId)).willReturn(new PostLikeResponse(postId));
+
+        mockMvc.perform(post("/api/post/{postId}/dislike", postId)
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader))
+                .andExpect(status().isOk())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("postId").description("좋아요 취소 할 글 id")
+                        ),
+                        responseFields(
+                                fieldWithPath("postId").description("좋아요 취소 한 post id")
                         )
                 ));
     }
