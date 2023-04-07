@@ -108,3 +108,29 @@ include::{snippets}/post/edit-reply/response-fields.adoc[]
 include::{snippets}/post/edit-reply/http-response.adoc[]
 - body
 include::{snippets}/post/edit-reply/response-fields.adoc[]
+
+'''
+
+=== 글 좋아요
+==== Request
+include::{snippets}/post/like-post/http-request.adoc[]
+- path parameter
+
+include::{snippets}/post/like-post/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/post/like-post/http-response.adoc[]
+include::{snippets}/post/like-post/response-fields.adoc[]
+
+'''
+
+=== 글 좋아요 취소
+==== Request
+include::{snippets}/post/dislike-post/http-request.adoc[]
+- path parameter
+
+include::{snippets}/post/dislike-post/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/post/dislike-post/http-response.adoc[]
+include::{snippets}/post/dislike-post/response-fields.adoc[]

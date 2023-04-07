@@ -6,6 +6,7 @@ import com.numble.instagram.dto.request.post.PostCreateRequest;
 import com.numble.instagram.dto.request.post.PostEditRequest;
 import com.numble.instagram.dto.request.post.ReplyRequest;
 import com.numble.instagram.dto.response.post.CommentResponse;
+import com.numble.instagram.dto.response.post.PostLikeResponse;
 import com.numble.instagram.dto.response.post.PostResponse;
 import com.numble.instagram.dto.response.post.ReplyResponse;
 import com.numble.instagram.presentation.auth.AuthenticatedUser;
@@ -25,6 +26,8 @@ public class PostController {
     private final EditCommentUsecase editCommentUsecase;
     private final CreateReplyUsecase createReplyUsecase;
     private final EditReplyUsecase editReplyUsecase;
+    private final CreatePostLikeUsecase createPostLikeUsecase;
+    private final DestroyPostLikeUsecase destroyPostLikeUsecase;
 
     @Login
     @PostMapping
@@ -68,8 +71,22 @@ public class PostController {
     @Login
     @PutMapping("/comment/reply/{replyId}")
     public ReplyResponse replyEdit(@AuthenticatedUser Long userId,
-                                       @PathVariable Long replyId,
-                                       @Validated @RequestBody ReplyRequest replyRequest) {
+                                   @PathVariable Long replyId,
+                                   @Validated @RequestBody ReplyRequest replyRequest) {
         return editReplyUsecase.execute(userId, replyId, replyRequest);
+    }
+
+    @Login
+    @PostMapping("/{postId}/like")
+    public PostLikeResponse likePost(@AuthenticatedUser Long userId,
+                                     @PathVariable Long postId) {
+        return createPostLikeUsecase.execute(userId, postId);
+    }
+
+    @Login
+    @PostMapping("/{postId}/dislike")
+    public PostLikeResponse dislikePost(@AuthenticatedUser Long userId,
+                                        @PathVariable Long postId) {
+        return destroyPostLikeUsecase.execute(userId, postId);
     }
 }
