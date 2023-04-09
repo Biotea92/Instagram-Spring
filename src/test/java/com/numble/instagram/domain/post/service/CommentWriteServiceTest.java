@@ -80,7 +80,7 @@ class CommentWriteServiceTest {
     public void testEditNonExistingComment() {
         User user = UserFixture.create("user");
         Post post = PostFixture.create("post-content");
-        Comment comment = CommentFixture.create(user, post, "old comment content");
+        Comment comment = CommentFixture.create(user, post);
         when(commentRepository.findById(any(Long.class))).thenReturn(Optional.empty());
         assertThrows(CommentNotFoundException.class, () ->
             commentWriteService.edit(user, comment.getId(), "test_comment_content")

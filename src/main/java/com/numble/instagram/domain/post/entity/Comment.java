@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -35,6 +37,9 @@ public class Comment {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
+    @OneToMany(mappedBy = "comment", fetch = LAZY, cascade = CascadeType.ALL)
+    private List<Reply> replies = new ArrayList<>();
+
     @PrePersist
     private void onPrePersist() {
         this.createdAt = LocalDateTime.now();
@@ -53,5 +58,9 @@ public class Comment {
 
     public void updateContent(String content) {
         this.content = this.content.equals(content) ? this.content : content;
+    }
+
+    public void addReply(Reply reply) {
+        this.replies.add(reply);
     }
 }

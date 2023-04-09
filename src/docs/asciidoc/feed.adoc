@@ -1,0 +1,13 @@
+== *Feed*
+
+'''
+
+=== 피드 조회
+==== Request
+include::{snippets}/feed/get-feeds/http-request.adoc[]
+- query parameter
+include::{snippets}/feed/get-feeds/query-parameters.adoc[]
+==== Response
+include::{snippets}/feed/get-feeds/http-response.adoc[]
+- body
+include::{snippets}/feed/get-feeds/response-fields.adoc[]

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -38,6 +40,9 @@ public class Post {
 
     @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "post", fetch = LAZY, cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
     @Version
     private Long version;
@@ -76,5 +81,9 @@ public class Post {
 
     public void decrementLikeCount() {
         this.likeCount--;
+    }
+
+    public void addComment(Comment comment) {
+        this.getComments().add(comment);
     }
 }
