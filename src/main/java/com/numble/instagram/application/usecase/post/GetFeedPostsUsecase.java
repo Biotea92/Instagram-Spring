@@ -36,7 +36,7 @@ public class GetFeedPostsUsecase {
                 .map(Feed::getPost)
                 .toList();
 
-        Iterator<Boolean> isPostLikedIterator = postLikeReadService.getPostLike(user, posts).iterator();
+        Iterator<Boolean> isPostLikedIterator = postLikeReadService.getPostLikes(user, posts).iterator();
 
         List<PostDetailResponse> postDetailResponses = posts.stream()
                 .map(post -> PostDetailResponse.from(post, isPostLikedIterator.next()))

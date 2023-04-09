@@ -50,7 +50,7 @@ class GetFeedPostsUsecaseTest {
 
         when(userReadService.getUser(user.getId())).thenReturn(user);
         when(feedReadService.getFeeds(user.getId(), cursorRequest)).thenReturn(feeds);
-        when(postLikeReadService.getPostLike(user, List.of(feeds.get(0).getPost(), feeds.get(1).getPost()))).thenReturn(List.of(true, false));
+        when(postLikeReadService.getPostLikes(user, List.of(feeds.get(0).getPost(), feeds.get(1).getPost()))).thenReturn(List.of(true, false));
 
         PageCursor<?> result = getFeedPostsUsecase.execute(user.getId(), cursorRequest);
 

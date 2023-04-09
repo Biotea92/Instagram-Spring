@@ -17,9 +17,9 @@ public class PostLikeReadService {
 
     private final PostLikeRepository postLikeRepository;
 
-    public List<Boolean> getPostLike(User user, List<Post> posts) {
-        List<Boolean> isPostLike = postLikeRepository.findAllByUserAndPosts(user, posts);
-        Collections.reverse(isPostLike);
-        return isPostLike;
+    public List<Boolean> getPostLikes(User user, List<Post> posts) {
+        List<Boolean> isPostLikes = postLikeRepository.findAllByUserAndPosts(user, posts);
+        Collections.reverse(isPostLikes);
+        return isPostLikes;
     }
 }
