@@ -74,8 +74,5 @@ class FeedReadServiceTest {
         List<Feed> result = feedReadService.getFeeds(follower.getId(), cursorRequest);
 
         assertEquals(10, result.size());
-        for (Feed feed : result) {
-            System.out.println("feed.getPost().getContent() = " + feed.getPost().getContent());
-        }
     }
 }
