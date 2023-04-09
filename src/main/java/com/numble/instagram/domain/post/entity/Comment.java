@@ -37,7 +37,7 @@ public class Comment {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "comment", fetch = LAZY)
+    @OneToMany(mappedBy = "comment", fetch = LAZY, cascade = CascadeType.ALL)
     private List<Reply> replies = new ArrayList<>();
 
     @PrePersist
@@ -58,5 +58,9 @@ public class Comment {
 
     public void updateContent(String content) {
         this.content = this.content.equals(content) ? this.content : content;
+    }
+
+    public void addReply(Reply reply) {
+        this.replies.add(reply);
     }
 }

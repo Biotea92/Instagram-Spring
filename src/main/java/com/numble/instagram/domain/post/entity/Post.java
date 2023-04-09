@@ -41,7 +41,7 @@ public class Post {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "post", fetch = LAZY)
+    @OneToMany(mappedBy = "post", fetch = LAZY, cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     @Version
@@ -81,5 +81,9 @@ public class Post {
 
     public void decrementLikeCount() {
         this.likeCount--;
+    }
+
+    public void addComment(Comment comment) {
+        this.getComments().add(comment);
     }
 }
