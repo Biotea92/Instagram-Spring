@@ -21,6 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,9 +68,9 @@ class ReplyWriteServiceTest {
     void wrongWriter() {
         User user = UserFixture.create("user");
         Comment comment = CommentFixture.create("comment-content");
-        Reply reply = ReplyFixture.create(user, comment, "old reply content");
+        Reply reply = ReplyFixture.create(user, comment);
         User wrongWriter = UserFixture.create("wrongWriter");
-        when(replyRepository.findById(comment.getId())).thenReturn(Optional.of(reply));
+        when(replyRepository.findById(eq(comment.getId()))).thenReturn(Optional.of(reply));
 
         assertThrows(
                 NotReplyWriterException.class,
@@ -83,7 +84,7 @@ class ReplyWriteServiceTest {
         User user = UserFixture.create("user");
         Comment comment = CommentFixture.create("comment-content");
         Reply reply = ReplyFixture.create(user, comment, "old reply content");
-        when(replyRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        when(replyRepository.findById(eq(user.getId()))).thenReturn(Optional.empty());
         assertThrows(ReplyNotFoundException.class, () ->
                 replyWriteService.edit(user, reply.getId(), "test_comment_content")
         );

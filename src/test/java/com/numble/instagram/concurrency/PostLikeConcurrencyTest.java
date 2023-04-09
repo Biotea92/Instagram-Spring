@@ -6,6 +6,7 @@ import com.numble.instagram.domain.post.repository.PostRepository;
 import com.numble.instagram.domain.user.entity.User;
 import com.numble.instagram.domain.user.repository.UserRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ class PostLikeConcurrencyTest {
     PostRepository postRepository;
     @Autowired
     UserRepository userRepository;
-    @Autowired
-    EntityManager em;
+    @PersistenceContext
+    private EntityManager em;
     @Autowired
     CreatePostLikeUsecase createPostLikeUsecase;
 
