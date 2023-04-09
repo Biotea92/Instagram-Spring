@@ -22,6 +22,7 @@ public class ReplyWriteService {
                 .replyWriteUser(user)
                 .comment(comment)
                 .content(content).build();
+        comment.addReply(newReply);
         return replyRepository.save(newReply);
     }
 

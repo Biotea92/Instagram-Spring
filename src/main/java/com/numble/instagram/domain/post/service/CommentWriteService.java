@@ -23,6 +23,7 @@ public class CommentWriteService {
                 .post(post)
                 .content(content)
                 .build();
+        post.addComment(newComment);
         return commentRepository.save(newComment);
     }
 
