@@ -1,6 +1,7 @@
 package com.numble.instagram.presentation.post;
 
 import com.numble.instagram.application.usecase.post.GetFeedPostsUsecase;
+import com.numble.instagram.dto.response.post.PostDetailResponse;
 import com.numble.instagram.presentation.auth.AuthenticatedUser;
 import com.numble.instagram.presentation.auth.Login;
 import com.numble.instagram.support.paging.CursorRequest;
@@ -19,8 +20,8 @@ public class FeedController {
 
     @Login
     @GetMapping
-    public PageCursor<?> getFeed(@AuthenticatedUser Long userId,
-                                 CursorRequest cursorRequest) {
+    public PageCursor<PostDetailResponse> getFeed(@AuthenticatedUser Long userId,
+                                                  CursorRequest cursorRequest) {
         return getFeedPostsUsecase.execute(userId, cursorRequest);
     }
 }

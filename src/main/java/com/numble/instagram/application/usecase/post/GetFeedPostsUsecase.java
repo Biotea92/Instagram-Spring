@@ -23,7 +23,7 @@ public class GetFeedPostsUsecase {
     private final FeedReadService feedReadService;
     private final PostLikeReadService postLikeReadService;
 
-    public PageCursor<?> execute(Long userId, CursorRequest cursorRequest) {
+    public PageCursor<PostDetailResponse> execute(Long userId, CursorRequest cursorRequest) {
         User user = userReadService.getUser(userId);
         List<Feed> feeds = feedReadService.getFeeds(user.getId(), cursorRequest);
 
