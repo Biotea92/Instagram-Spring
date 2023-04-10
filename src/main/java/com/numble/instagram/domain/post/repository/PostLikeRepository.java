@@ -29,4 +29,6 @@ public interface PostLikeRepository extends JpaRepository<PostLike, Long> {
             where p in :posts
     """)
     List<Boolean> findAllByUserAndPosts(@Param("user") User user, @Param("posts") List<Post> posts);
+
+    List<PostLike> findAllByPost(Post post);
 }

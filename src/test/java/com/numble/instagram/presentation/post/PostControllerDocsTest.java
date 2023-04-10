@@ -31,6 +31,7 @@ import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -67,6 +68,12 @@ class PostControllerDocsTest {
     private CreatePostLikeUsecase createPostLikeUsecase;
     @MockBean
     private DestroyPostLikeUsecase destroyPostLikeUsecase;
+    @MockBean
+    private DestroyPostUsecase destroyPostUsecase;
+    @MockBean
+    private DestroyCommentUsecase destroyCommentUsecase;
+    @MockBean
+    private DestroyReplyUsecase destroyReplyUsecase;
     @Autowired
     private WebApplicationContext webApplicationContext;
     private static final String DOCUMENT_IDENTIFIER = "post/{method-name}/";
@@ -352,5 +359,66 @@ class PostControllerDocsTest {
                                 fieldWithPath("postId").description("좋아요 취소 한 post id")
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("글 삭제는 완료되어야 한다.")
+    void deletePost() throws Exception {
+        String authorizationHeader = "Bearer access-token";
+        Long userId = 1L;
+        Long postId = 1L;
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
+
+
+        mockMvc.perform(delete("/api/post/{postId}", postId)
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader))
+                .andExpect(status().isNoContent())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("postId").description("삭제 할 글 id")
+                        )
+                ));
+        verify(destroyPostUsecase).execute(userId, postId);
+    }
+
+    @Test
+    @DisplayName("댓글 삭제는 완료되어야 한다.")
+    void deleteComment() throws Exception {
+        String authorizationHeader = "Bearer access-token";
+        Long userId = 1L;
+        Long commentId = 1L;
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
+
+        mockMvc.perform(delete("/api/post/comment/{commentId}", commentId)
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader))
+                .andExpect(status().isNoContent())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("commentId").description("삭제 할 댓글 id")
+                        )
+                ));
+        verify(destroyCommentUsecase).execute(userId, commentId);
+    }
+
+    @Test
+    @DisplayName("답글 삭제는 완료되어야 한다.")
+    void deleteReply() throws Exception {
+        String authorizationHeader = "Bearer access-token";
+        Long userId = 1L;
+        Long replyId = 1L;
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
+
+        mockMvc.perform(delete("/api/post/reply/{replyId}", replyId)
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader))
+                .andExpect(status().isNoContent())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        pathParameters(
+                                parameterWithName("replyId").description("삭제 할 답글 id")
+                        )
+                ));
+        verify(destroyReplyUsecase).execute(userId, replyId);
     }
 }

@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -27,6 +29,11 @@ public class PostLikeWriteService {
         PostLike postLike = postLikeRepository.findByUserAndPost(user, post)
                 .orElseThrow(NotLikedPostException::new);
         postLikeRepository.delete(postLike);
+    }
+
+    public void deletePostLike(Post post) {
+        List<PostLike> postLikes = postLikeRepository.findAllByPost(post);
+        postLikeRepository.deleteAll(postLikes);
     }
 
     private void checkLiked(User user, Post post) {
