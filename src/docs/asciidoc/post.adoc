@@ -134,3 +134,39 @@ include::{snippets}/post/dislike-post/path-parameters.adoc[]
 ==== Response
 include::{snippets}/post/dislike-post/http-response.adoc[]
 include::{snippets}/post/dislike-post/response-fields.adoc[]
+
+'''
+
+=== 글 삭제
+==== Request
+include::{snippets}/post/delete-post/http-request.adoc[]
+- path parameter
+
+include::{snippets}/post/delete-post/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/post/delete-post/http-response.adoc[]
+
+'''
+
+=== 댓글 삭제
+==== Request
+include::{snippets}/post/delete-comment/http-request.adoc[]
+- path parameter
+
+include::{snippets}/post/delete-comment/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/post/delete-comment/http-response.adoc[]
+
+'''
+
+=== 답글 삭제
+==== Request
+include::{snippets}/post/delete-reply/http-request.adoc[]
+- path parameter
+
+include::{snippets}/post/delete-reply/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/post/delete-reply/http-response.adoc[]
