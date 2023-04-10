@@ -37,7 +37,7 @@ public class Comment {
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "comment", fetch = LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "comment", fetch = LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
 
     @PrePersist

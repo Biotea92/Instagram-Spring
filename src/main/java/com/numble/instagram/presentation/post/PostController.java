@@ -12,6 +12,7 @@ import com.numble.instagram.dto.response.post.ReplyResponse;
 import com.numble.instagram.presentation.auth.AuthenticatedUser;
 import com.numble.instagram.presentation.auth.Login;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,9 @@ public class PostController {
     private final EditReplyUsecase editReplyUsecase;
     private final CreatePostLikeUsecase createPostLikeUsecase;
     private final DestroyPostLikeUsecase destroyPostLikeUsecase;
+    private final DestroyReplyUsecase destroyReplyUsecase;
+    private final DestroyCommentUsecase destroyCommentUsecase;
+    private final DestroyPostUsecase destroyPostUsecase;
 
     @Login
     @PostMapping
@@ -88,5 +92,29 @@ public class PostController {
     public PostLikeResponse dislikePost(@AuthenticatedUser Long userId,
                                         @PathVariable Long postId) {
         return destroyPostLikeUsecase.execute(userId, postId);
+    }
+
+    @Login
+    @DeleteMapping("/reply/{replyId}")
+    public ResponseEntity<Void> deleteReply(@AuthenticatedUser Long userId,
+                                            @PathVariable Long replyId) {
+        destroyReplyUsecase.execute(userId, replyId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Login
+    @DeleteMapping("/comment/{commentId}")
+    public ResponseEntity<Void> deleteComment(@AuthenticatedUser Long userId,
+                                              @PathVariable Long commentId) {
+        destroyCommentUsecase.execute(userId, commentId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Login
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@AuthenticatedUser Long userId,
+                                           @PathVariable Long postId) {
+        destroyPostUsecase.execute(userId, postId);
+        return ResponseEntity.noContent().build();
     }
 }

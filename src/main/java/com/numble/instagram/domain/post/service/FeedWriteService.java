@@ -26,6 +26,11 @@ public class FeedWriteService {
         feedRepository.saveAll(feeds);
     }
 
+    public void deleteFeed(Post post) {
+        List<Feed> feeds = feedRepository.findAllByPost(post);
+        feedRepository.deleteAll(feeds);
+    }
+
     private Feed toFeed(Post newPost, User follower) {
         return Feed.builder()
                 .user(follower)
