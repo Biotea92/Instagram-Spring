@@ -46,6 +46,11 @@ public class PostWriteService {
         post.decrementLikeCount();
     }
 
+    public void deletePost(User user, Post post) {
+        checkWriter(user, post);
+        postRepository.delete(post);
+    }
+
     private static void checkWriter(User user, Post post) {
         if (!post.isWriter(user)) {
             throw new NotPostWriterException();

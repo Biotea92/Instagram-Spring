@@ -27,11 +27,21 @@ public class ReplyWriteService {
     }
 
     public Reply edit(User user, Long replyId, String content) {
-        Reply reply = replyRepository.findById(replyId)
-                .orElseThrow(ReplyNotFoundException::new);
+        Reply reply = getReply(replyId);
         checkReplyWriter(user, reply);
         reply.updateContent(content);
         return reply;
+    }
+
+    public void deleteReply(User user, Long replyId) {
+        Reply reply = getReply(replyId);
+        checkReplyWriter(user, reply);
+        replyRepository.delete(reply);
+    }
+
+    private Reply getReply(Long replyId) {
+        return replyRepository.findById(replyId)
+                .orElseThrow(ReplyNotFoundException::new);
     }
 
     private static void checkReplyWriter(User user, Reply reply) {

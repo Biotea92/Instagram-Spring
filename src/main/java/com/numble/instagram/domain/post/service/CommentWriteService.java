@@ -28,16 +28,26 @@ public class CommentWriteService {
     }
 
     public Comment edit(User user, Long commentId, String content) {
-        Comment comment = commentRepository.findById(commentId)
-                .orElseThrow(CommentNotFoundException::new);
+        Comment comment = getComment(commentId);
         checkCommentWriter(user, comment);
         comment.updateContent(content);
         return comment;
+    }
+
+    public void deleteComment(User user, Long commentId) {
+        Comment comment = getComment(commentId);
+        checkCommentWriter(user, comment);
+        commentRepository.delete(comment);
     }
 
     private static void checkCommentWriter(User user, Comment comment) {
         if (!comment.isCommentWriteUser(user)) {
             throw new NotCommentWriterException();
         }
+    }
+
+    private Comment getComment(Long commentId) {
+        return commentRepository.findById(commentId)
+                .orElseThrow(CommentNotFoundException::new);
     }
 }
