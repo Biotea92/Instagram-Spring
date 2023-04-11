@@ -40,20 +40,9 @@ public class ChatRoom {
     }
 
     @Builder
-    public ChatRoom(User user1, User user2, List<Message> messages) {
+    public ChatRoom(User user1, User user2) {
         this.user1 = user1;
         this.user2 = user2;
-        this.messages = messages;
-    }
-
-    public static ChatRoom create(Message newMessage) {
-        List<Message> messages = new ArrayList<>();
-        messages.add(newMessage);
-        return ChatRoom.builder()
-                .user1(newMessage.getFromUser())
-                .user2(newMessage.getToUser())
-                .messages(messages)
-                .build();
     }
 
     public void addMessage(Message newMessage) {

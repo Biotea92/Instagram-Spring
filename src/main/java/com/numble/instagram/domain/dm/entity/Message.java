@@ -45,9 +45,22 @@ public class Message {
     }
 
     @Builder
-    public Message(String content, User fromUser, User toUser) {
+    public Message(String content, User fromUser, User toUser, ChatRoom chatRoom) {
         this.content = content;
         this.fromUser = fromUser;
         this.toUser = toUser;
+        this.messageType = MessageType.TEXT;
+        this.chatRoom = chatRoom;
+    }
+
+    public static Message create(String content, User fromUser, User toUser, ChatRoom chatRoom) {
+        Message newMessage = Message.builder()
+                .fromUser(fromUser)
+                .toUser(toUser)
+                .chatRoom(chatRoom)
+                .content(content)
+                .build();
+        chatRoom.addMessage(newMessage);
+        return newMessage;
     }
 }
