@@ -32,6 +32,10 @@ public class Message {
     @Enumerated(EnumType.STRING)
     private MessageType messageType;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chatroom_id")
+    private ChatRoom chatRoom;
+
     @Column(updatable = false)
     private LocalDateTime sentAt;
 

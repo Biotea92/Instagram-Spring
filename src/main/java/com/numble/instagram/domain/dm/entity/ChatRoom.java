@@ -2,6 +2,7 @@ package com.numble.instagram.domain.dm.entity;
 
 import com.numble.instagram.domain.user.entity.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,7 +28,7 @@ public class ChatRoom {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user2;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
 
     @Column(updatable = false)
@@ -36,5 +37,26 @@ public class ChatRoom {
     @PrePersist
     private void onPrePersist() {
         this.createdAt = LocalDateTime.now();
+    }
+
+    @Builder
+    public ChatRoom(User user1, User user2, List<Message> messages) {
+        this.user1 = user1;
+        this.user2 = user2;
+        this.messages = messages;
+    }
+
+    public static ChatRoom create(Message newMessage) {
+        List<Message> messages = new ArrayList<>();
+        messages.add(newMessage);
+        return ChatRoom.builder()
+                .user1(newMessage.getFromUser())
+                .user2(newMessage.getToUser())
+                .messages(messages)
+                .build();
+    }
+
+    public void addMessage(Message newMessage) {
+        this.messages.add(newMessage);
     }
 }
