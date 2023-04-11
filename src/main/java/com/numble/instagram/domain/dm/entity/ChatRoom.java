@@ -48,4 +48,8 @@ public class ChatRoom {
     public void addMessage(Message newMessage) {
         this.messages.add(newMessage);
     }
+
+    public boolean isChatRoomUser(User user) {
+        return this.user1 == user || this.user2 == user;
+    }
 }
