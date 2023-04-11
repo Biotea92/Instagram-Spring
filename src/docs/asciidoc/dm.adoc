@@ -1,0 +1,17 @@
+== *DM*
+
+'''
+
+=== dm 전송
+==== Request
+include::{snippets}/dm/send-message/http-request.adoc[]
+- path parameter
+
+include::{snippets}/dm/send-message/path-parameters.adoc[]
+- body
+include::{snippets}/dm/send-message/request-fields.adoc[]
+
+==== Response
+include::{snippets}/dm/send-message/http-response.adoc[]
+- body
+include::{snippets}/dm/send-message/response-fields.adoc[]
