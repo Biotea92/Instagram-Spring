@@ -15,3 +15,5 @@ include::follow.adoc[]
 include::post.adoc[]
 
 include::feed.adoc[]
+
+include::dm.adoc[]

@@ -1,0 +1,46 @@
+== *DM*
+
+'''
+
+=== dm 전송
+==== Request
+include::{snippets}/dm/send-message/http-request.adoc[]
+- path parameter
+
+include::{snippets}/dm/send-message/path-parameters.adoc[]
+- body
+include::{snippets}/dm/send-message/request-fields.adoc[]
+
+==== Response
+include::{snippets}/dm/send-message/http-response.adoc[]
+- body
+include::{snippets}/dm/send-message/response-fields.adoc[]
+
+'''
+
+=== DM 목록 조회
+==== Request
+include::{snippets}/dm/get-chat-room/http-request.adoc[]
+- query parameter
+include::{snippets}/dm/get-chat-room/query-parameters.adoc[]
+
+==== Response
+include::{snippets}/dm/get-chat-room/http-response.adoc[]
+- body
+include::{snippets}/dm/get-chat-room/response-fields.adoc[]
+
+'''
+
+=== DM 상세내역 조회 with messages
+==== Request
+include::{snippets}/dm/get-chat-room-with-messages/http-request.adoc[]
+- query parameter
+include::{snippets}/dm/get-chat-room-with-messages/query-parameters.adoc[]
+- path parameter
+
+include::{snippets}/dm/get-chat-room-with-messages/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/dm/get-chat-room-with-messages/http-response.adoc[]
+- body
+include::{snippets}/dm/get-chat-room-with-messages/response-fields.adoc[]
