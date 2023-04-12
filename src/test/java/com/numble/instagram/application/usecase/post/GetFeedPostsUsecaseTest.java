@@ -54,10 +54,10 @@ class GetFeedPostsUsecaseTest {
 
         PageCursor<?> result = getFeedPostsUsecase.execute(user.getId(), cursorRequest);
 
-        assertThat(result.posts()).hasSize(2);
+        assertThat(result.body()).hasSize(2);
         assertThat(result.nextCursorRequest().key()).isEqualTo(1L);
-        PostDetailResponse postDetailResponse1 = (PostDetailResponse) result.posts().get(0);
-        PostDetailResponse postDetailResponse2 = (PostDetailResponse) result.posts().get(1);
+        PostDetailResponse postDetailResponse1 = (PostDetailResponse) result.body().get(0);
+        PostDetailResponse postDetailResponse2 = (PostDetailResponse) result.body().get(1);
         assertThat(postDetailResponse1.postId()).isEqualTo(feeds.get(0).getPost().getId());
         assertThat(postDetailResponse1.isPostLiked()).isTrue();
         assertThat(postDetailResponse2.postId()).isEqualTo(feeds.get(1).getPost().getId());
