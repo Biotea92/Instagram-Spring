@@ -6,7 +6,7 @@
 Rest API 서버로 좀 더 Spring에 집중하여 구현하기 위해 클라이언트는 따로 있지않습니다.  
 
 
-자세한 구현 내용은 [ISSUES](https://github.com/Kwoojong/Instagram-Spring/issues)와 [PR](https://github.com/Kwoojong/Instagram-Spring/pulls)에서 확인하실 수 있습니다.  
+자세한 구현 내용과 고민, 트러블 슈팅은 [ISSUES](https://github.com/Kwoojong/Instagram-Spring/issues)와 [PR](https://github.com/Kwoojong/Instagram-Spring/pulls)에서 확인하실 수 있습니다.  
 
 
 컨벤션이나 프로젝트의 소개는 [WIKI](https://github.com/Kwoojong/Instagram-Spring/wiki)에서 확인하실 수 있습니다.  
