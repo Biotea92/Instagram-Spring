@@ -22,7 +22,7 @@ public class GetChatRoomUsecase {
     private final ChatRoomReadService chatRoomReadService;
     private final MessageReadService messageReadService;
 
-    public PageCursor<?> execute(Long userId, Long chatroomId, CursorRequest cursorRequest) {
+    public PageCursor<MessageDetailResponse> execute(Long userId, Long chatroomId, CursorRequest cursorRequest) {
         User user = userReadService.getUser(userId);
         ChatRoom chatRoom = chatRoomReadService.getChatRoom(chatroomId, user);
         List<Message> messages = messageReadService.getMessages(chatRoom, cursorRequest);

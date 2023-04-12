@@ -3,6 +3,7 @@ package com.numble.instagram.presentation.dm;
 import com.numble.instagram.application.usecase.dm.CreateMessageUsecase;
 import com.numble.instagram.application.usecase.dm.GetChatRoomUsecase;
 import com.numble.instagram.dto.request.dm.MessageRequest;
+import com.numble.instagram.dto.response.dm.MessageDetailResponse;
 import com.numble.instagram.dto.response.dm.MessageResponse;
 import com.numble.instagram.presentation.auth.AuthenticatedUser;
 import com.numble.instagram.presentation.auth.Login;
@@ -29,9 +30,9 @@ public class DmController {
 
     @Login
     @GetMapping("/chatroom/{chatroomId}")
-    public PageCursor<?> getChatRoom(@AuthenticatedUser Long userId,
-                                     @PathVariable Long chatroomId,
-                                     CursorRequest cursorRequest) {
+    public PageCursor<MessageDetailResponse> getChatRoom(@AuthenticatedUser Long userId,
+                                                         @PathVariable Long chatroomId,
+                                                         CursorRequest cursorRequest) {
         return getChatRoomUsecase.execute(userId, chatroomId, cursorRequest);
     }
 }
