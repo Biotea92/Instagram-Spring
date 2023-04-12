@@ -40,5 +40,6 @@ Rest API 서버로 좀 더 Spring에 집중하여 구현하기 위해 클라이�
 
 - Issue에 등록 된 사항에 대해 개발을 진행하고 PR을 통해 기능이 개발됬음을 알리고 Develope 브랜치에 merge합니다.
 - 배포시에도 배포한다는 PR을 올리고 main 브랜치에 merge 합니다.
-- main 브랜치에 merge시 Github Actions로 서버에 배포가 완료됩니다.
+- main 브랜치에 merge시 Github Actions로 서버에 자동 배포가 완료됩니다.
+- PR은 다음과 같이 등록합니다. 
   <img width="1483" alt="스크린샷 2023-04-13 오전 3 20 43" src="https://user-images.githubusercontent.com/102657974/231550500-7608dd5f-3303-420b-86ad-1fe36b4407ed.png">
