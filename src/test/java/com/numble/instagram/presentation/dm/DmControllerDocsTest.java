@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.numble.instagram.application.auth.token.TokenProvider;
 import com.numble.instagram.application.usecase.dm.CreateMessageUsecase;
 import com.numble.instagram.application.usecase.dm.GetChatRoomWithMessagesUsecase;
+import com.numble.instagram.application.usecase.dm.GetChatRoomsUsecase;
 import com.numble.instagram.domain.dm.entity.MessageType;
 import com.numble.instagram.dto.request.dm.MessageRequest;
+import com.numble.instagram.dto.response.dm.ChatRoomWithMessageResponse;
 import com.numble.instagram.dto.response.dm.MessageDetailResponse;
 import com.numble.instagram.dto.response.dm.MessageResponse;
 import com.numble.instagram.support.paging.CursorRequest;
@@ -55,6 +57,8 @@ class DmControllerDocsTest {
     private CreateMessageUsecase createMessageUsecase;
     @MockBean
     private GetChatRoomWithMessagesUsecase getChatRoomWithMessagesUsecase;
+    @MockBean
+    private GetChatRoomsUsecase getChatRoomsUsecase;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -107,7 +111,7 @@ class DmControllerDocsTest {
 
     @Test
     @DisplayName("채팅방의 메시지 내역은 조회된다.")
-    void getChatRoom() throws Exception {
+    void getChatRoomWithMessages() throws Exception {
         String authorizationHeader = "Bearer access-token";
         Long userId = 1L;
         Long chatroomId = 1L;
@@ -163,6 +167,55 @@ class DmControllerDocsTest {
                                 fieldWithPath("body[].content").description("message 내용"),
                                 fieldWithPath("body[].messageType").description("message 타입"),
                                 fieldWithPath("body[].sentAt").description("message 보낸 시간")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("DM 목록은 채팅방을 기준으로 lastMessage와 함께 조회된다.")
+    void getChatRoom() throws Exception {
+        String authorizationHeader = "Bearer access-token";
+        Long userId = 1L;
+        given(tokenProvider.isValidToken(authorizationHeader)).willReturn(true);
+        given(tokenProvider.getUserId(authorizationHeader)).willReturn(userId);
+
+        CursorRequest cursorRequest = new CursorRequest(10L, 5);
+
+        ArrayList<ChatRoomWithMessageResponse> chatRoomWithMessageResponses = new ArrayList<>(LongStream.range(1L, 6L).mapToObj(i ->
+                new ChatRoomWithMessageResponse(
+                        i,
+                        "nickname" + i,
+                        "https://profileUrl.png",
+                        "채팅방 마지막 메시지 내용" + i,
+                        LocalDateTime.now().minusDays(6L - i))).toList());
+        Collections.reverse(chatRoomWithMessageResponses);
+
+        PageCursor<ChatRoomWithMessageResponse> pageCursor =
+                new PageCursor<>(new CursorRequest(1L, 5), chatRoomWithMessageResponses);
+
+        given(getChatRoomsUsecase.execute(userId, cursorRequest))
+                .willReturn(pageCursor);
+
+        mockMvc.perform(get("/api/dm/chatroom")
+                        .param("key", String.valueOf(cursorRequest.key()))
+                        .param("size", String.valueOf(cursorRequest.size()))
+                        .header(HttpHeaders.AUTHORIZATION, authorizationHeader))
+                .andExpect(status().isOk())
+                .andDo(document(DOCUMENT_IDENTIFIER,
+                        queryParameters(
+                                parameterWithName("key").description("가져 올 커서의 key"),
+                                parameterWithName("size").description("가져올 chatRoom의 size")
+                        ),
+                        responseFields(
+                                fieldWithPath("nextCursorRequest").description("다음 커서 정보"),
+                                fieldWithPath("nextCursorRequest.key").description("다음 커서 key"),
+                                fieldWithPath("nextCursorRequest.size").description("chatroom size"),
+                                fieldWithPath("body").description("chatroom 정보"),
+                                fieldWithPath("body[].chatroomId").description("chatroom id"),
+                                fieldWithPath("body[].nickname").description("마지막 메시지 보낸 사람 닉네임"),
+                                fieldWithPath("body[].profileImageUrl").description("마지막 메시지 보낸 사람 프로필 URL"),
+                                fieldWithPath("body[].lastMessageContent").description("마지막 메시지 내용"),
+                                fieldWithPath("body[].lastSentAt").description("마지막 메시지 보낸 시간")
                         )
                 ));
     }
