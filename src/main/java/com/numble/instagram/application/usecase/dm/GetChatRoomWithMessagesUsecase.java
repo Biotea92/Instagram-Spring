@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class GetChatRoomUsecase {
+public class GetChatRoomWithMessagesUsecase {
 
     private final UserReadService userReadService;
     private final ChatRoomReadService chatRoomReadService;

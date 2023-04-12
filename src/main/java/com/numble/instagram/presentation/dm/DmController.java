@@ -1,7 +1,7 @@
 package com.numble.instagram.presentation.dm;
 
 import com.numble.instagram.application.usecase.dm.CreateMessageUsecase;
-import com.numble.instagram.application.usecase.dm.GetChatRoomUsecase;
+import com.numble.instagram.application.usecase.dm.GetChatRoomWithMessagesUsecase;
 import com.numble.instagram.dto.request.dm.MessageRequest;
 import com.numble.instagram.dto.response.dm.MessageDetailResponse;
 import com.numble.instagram.dto.response.dm.MessageResponse;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class DmController {
 
     private final CreateMessageUsecase createMessageUsecase;
-    private final GetChatRoomUsecase getChatRoomUsecase;
+    private final GetChatRoomWithMessagesUsecase getChatRoomWithMessagesUsecase;
 
     @Login
     @PostMapping("/{toUserId}")
@@ -33,6 +33,6 @@ public class DmController {
     public PageCursor<MessageDetailResponse> getChatRoom(@AuthenticatedUser Long userId,
                                                          @PathVariable Long chatroomId,
                                                          CursorRequest cursorRequest) {
-        return getChatRoomUsecase.execute(userId, chatroomId, cursorRequest);
+        return getChatRoomWithMessagesUsecase.execute(userId, chatroomId, cursorRequest);
     }
 }
