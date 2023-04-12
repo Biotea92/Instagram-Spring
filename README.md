@@ -21,12 +21,12 @@ Rest API 서버로 좀 더 Spring에 집중하여 구현하기 위해 클라이�
 - 각 API의 기능들을 기능적으로 잘 동작할 수 있게 고민해서 로직을 작성한다.
 
 ## 📖 개발 상세 내용 
-[01. 프로젝트 컨벤션](https://github.com/Kwoojong/Instagram-Spring/wiki/01.-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%BB%A8%EB%B2%A4%EC%85%98)  
-[02. CI / CD](https://github.com/Kwoojong/Instagram-Spring/wiki/02.-CI---CD)  
-[03. JWT 인증하기 시나리오](https://github.com/Kwoojong/Instagram-Spring/wiki/03.-JWT-%EC%9D%B8%EC%A6%9D%ED%95%98%EA%B8%B0-flow)  
-[04. Rest API 설계](https://github.com/Kwoojong/Instagram-Spring/wiki/04.-Rest-API-%EC%84%A4%EA%B3%84)  
-[05. ERD 및 Entity 관계도](https://github.com/Kwoojong/Instagram-Spring/wiki/05.-ERD-%EB%B0%8F-Entity%EA%B4%80%EA%B3%84%EB%8F%84)  
-[06. 프로젝트 아키텍처 소개](https://github.com/Kwoojong/Instagram-Spring/wiki/06.-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%86%8C%EA%B0%9C)
+- [01. 프로젝트 컨벤션](https://github.com/Kwoojong/Instagram-Spring/wiki/01.-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%BB%A8%EB%B2%A4%EC%85%98)  
+- [02. CI / CD](https://github.com/Kwoojong/Instagram-Spring/wiki/02.-CI---CD)  
+- [03. JWT 인증하기 시나리오](https://github.com/Kwoojong/Instagram-Spring/wiki/03.-JWT-%EC%9D%B8%EC%A6%9D%ED%95%98%EA%B8%B0-flow)  
+- [04. Rest API 설계](https://github.com/Kwoojong/Instagram-Spring/wiki/04.-Rest-API-%EC%84%A4%EA%B3%84)  
+- [05. ERD 및 Entity 관계도](https://github.com/Kwoojong/Instagram-Spring/wiki/05.-ERD-%EB%B0%8F-Entity%EA%B4%80%EA%B3%84%EB%8F%84)  
+- [06. 프로젝트 아키텍처 소개](https://github.com/Kwoojong/Instagram-Spring/wiki/06.-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%95%84%ED%82%A4%ED%85%8D%EC%B2%98-%EC%86%8C%EA%B0%9C)
 
 ## 📖 배포 환경
 - Java : openJDK 17
