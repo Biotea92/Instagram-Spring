@@ -33,3 +33,12 @@ Rest API 서버로 좀 더 Spring에 집중하여 구현하기 위해 클라이�
 - Spring boot 3.0.5
 - AWS EC2 micro.t2, RAM 1GB, vCPU 1, 볼륨 20GiB
 - Database : MySQL Community (AWS RDS : t3.micro) RAM 1GB, vCPU 2, 볼륨 20GiB
+
+## 📖 개발 순서 
+- 다음과 같이 개발 할 기능 또는 수정해야 할 사항들을 Issue에 등록합니다.
+  <img width="1492" alt="스크린샷 2023-04-13 오전 3 20 27" src="https://user-images.githubusercontent.com/102657974/231549627-015019a9-f91b-4c72-875a-b53d0051b14a.png">
+
+- Issue에 등록 된 사항에 대해 개발을 진행하고 PR을 통해 기능이 개발됬음을 알리고 Develope 브랜치에 merge합니다.
+- 배포시에도 배포한다는 PR을 올리고 main 브랜치에 merge 합니다.
+- main 브랜치에 merge시 Github Actions로 서버에 배포가 완료됩니다.
+  <img width="1483" alt="스크린샷 2023-04-13 오전 3 20 43" src="https://user-images.githubusercontent.com/102657974/231550500-7608dd5f-3303-420b-86ad-1fe36b4407ed.png">
