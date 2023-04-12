@@ -1,13 +1,17 @@
 package com.numble.instagram.domain.dm.service;
 
+import com.numble.instagram.domain.dm.dto.ChatRoomWithLastMessage;
 import com.numble.instagram.domain.dm.entity.ChatRoom;
 import com.numble.instagram.domain.dm.repository.ChatRoomRepository;
 import com.numble.instagram.domain.user.entity.User;
 import com.numble.instagram.exception.badrequest.NotChatRoomUserException;
 import com.numble.instagram.exception.notfound.ChatRoomNotFoundException;
+import com.numble.instagram.support.paging.CursorRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +30,10 @@ public class ChatRoomReadService {
                 .orElseThrow(ChatRoomNotFoundException::new);
         checkChatRoomUser(user, chatRoom);
         return chatRoom;
+    }
+
+    public List<ChatRoomWithLastMessage> getChatRoomsWithLastMessage(User user, CursorRequest cursorRequest) {
+        return chatRoomRepository.findChatRoomsByUserWithLatestMessage(user, cursorRequest);
     }
 
     private static void checkChatRoomUser(User user, ChatRoom chatRoom) {
