@@ -42,6 +42,6 @@ public class GetFeedPostsUsecase {
                 .map(post -> PostDetailResponse.from(post, isPostLikedIterator.next()))
                 .toList();
 
-        return PageCursor.fromPostDetailResponse(cursorRequest.next(nextKey), postDetailResponses);
+        return PageCursor.fromResponse(cursorRequest.next(nextKey), postDetailResponses);
     }
 }
