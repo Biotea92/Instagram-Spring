@@ -33,6 +33,6 @@ public class GetChatRoomsUsecase {
                 .map(cm -> ChatRoomWithMessageResponse.from(cm.chatRoom(), cm.lastMessage()))
                 .toList();
 
-        return PageCursor.fromChatRoomWithMessageResponse(cursorRequest.next(nextKey), chatRoomWithMessageResponses);
+        return PageCursor.fromResponse(cursorRequest.next(nextKey), chatRoomWithMessageResponses);
     }
 }
