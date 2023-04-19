@@ -17,6 +17,8 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
 
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private static final String TABLE_NAME = "refresh_token";
+    private static final int SUCCESS_INSERT = 1;
+    private static final int EXPECTED_AFFECTED_ROWS = 1;
     private static final RowMapper<RefreshToken> rowMapper = (rs, rowNum) -> RefreshToken.builder()
             .tokenValue(rs.getString("token_value"))
             .expiredAt(rs.getTimestamp("expired_at").toLocalDateTime())
@@ -31,10 +33,10 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
                 """, TABLE_NAME);
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(refreshToken);
         int insertCount = namedParameterJdbcTemplate.update(sql, parameterSource);
-        if (insertCount == 1) {
+        if (insertCount == SUCCESS_INSERT) {
             return refreshToken;
         }
-        throw new IllegalStateException();
+        throw new IllegalStateException("리프레쉬 토큰 저장에 실패했습니다.");
     }
 
     @Override
@@ -46,8 +48,8 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
                 """, TABLE_NAME);
         SqlParameterSource namedParameters = new MapSqlParameterSource("token_value", tokenValue);
         List<RefreshToken> results = namedParameterJdbcTemplate.query(sql, namedParameters, rowMapper);
-        if (results.size() > 1) {
-            throw new IllegalStateException();
+        if (results.size() > EXPECTED_AFFECTED_ROWS) {
+            throw new IllegalStateException("중복된 리프래쉬 토큰이 존재합니다.");
         }
         return results.stream().findFirst();
     }
@@ -60,8 +62,8 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
                 """, TABLE_NAME);
         SqlParameterSource namedParameters = new MapSqlParameterSource("token_value", tokenValue);
         int deleteCount = namedParameterJdbcTemplate.update(sql, namedParameters);
-        if (deleteCount != 1) {
-            throw new IllegalStateException();
+        if (deleteCount != EXPECTED_AFFECTED_ROWS) {
+            throw new IllegalStateException("기존 리프래쉬 토큰 삭제에 실패 했습니다.");
         }
     }
 }
