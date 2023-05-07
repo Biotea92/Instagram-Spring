@@ -20,9 +20,9 @@ Rest API 서버로 좀 더 Spring에 집중하여 구현하기 위해 클라이�
 
 챌린지를 위해 만든 Repository 이기에 2023/04 이후의 업데이트는 없습니다. 
 
-<img width="332" alt="넘블 1등 수상" src="https://user-images.githubusercontent.com/102657974/236658188-3c159a0c-44fa-486e-b5e6-b3bd70b69b6b.png">
+## 📖 넘블 인스타그램 서버만들기 챌린지에서 1등을 수상했습니다.
 
-넘블 인스타그램 서버만들기 챌린지에서 1등을 수상했습니다. 
+<img width="332" alt="넘블 1등 수상" src="https://user-images.githubusercontent.com/102657974/236658188-3c159a0c-44fa-486e-b5e6-b3bd70b69b6b.png">
 
 ## 📖 프로젝트 목표
 - Github Actions로 CI / CD 파이프라인을 구성해 배포 자동화한다.
