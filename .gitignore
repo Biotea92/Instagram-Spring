@@ -37,5 +37,5 @@ out/
 .vscode/
 
 /src/main/resources/application-prd.properties
-/src/main/resources/static/docs
+#/src/main/resources/static/docs
 /src/main/resources/application-local2.properties
